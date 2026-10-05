@@ -60,7 +60,7 @@ fun ProfileScreen(
     nombre: String,
     apellido: String,
     usuario: String,
-    onLogoutClick: () -> Unit,
+    onBackToDashboardClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     profileViewModel: ProfileViewModel = viewModel()
 ) {
@@ -211,13 +211,10 @@ fun ProfileScreen(
         Spacer(modifier = Modifier.weight(1f))
 
         OutlinedButton(
-            onClick = onLogoutClick,
-            modifier = Modifier.width(300.dp),
-            colors = ButtonDefaults.outlinedButtonColors(
-                contentColor = MaterialTheme.colorScheme.error
-            )
+            onClick = onBackToDashboardClick,
+            modifier = Modifier.width(300.dp)
         ) {
-            Text("Cerrar Sesión")
+            Text("Volver al Dashboard")
         }
     }
     //Dialogo de Alerta

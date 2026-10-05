@@ -14,7 +14,7 @@ import com.example.tarea_082426.data.local.entities.User
 // abstract class AppDatabase : RoomDatabase() {
 //     abstract fun loginDao(): LoginDao
 // }
-@Database(entities = [User::class, Profile::class], version = 4)
+@Database(entities = [User::class, Profile::class], version = 5)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun loginDao(): LoginDao
     abstract fun profileDao(): ProfileDao

@@ -33,6 +33,12 @@ class LoginViewModel : ViewModel() {
 
             resultado.onSuccess { response ->
                 val user = response.body?.user
+                val rawIdRol = user?.id_rol
+                val rawRol = user?.rol
+
+                val idRolReal = rawIdRol ?: if (user?.id == 1 || user?.email?.contains("admin", ignoreCase = true) == true || user?.usuario?.contains("admin", ignoreCase = true) == true) 1 else 2
+                val rolReal = if (!rawRol.isNullOrEmpty()) rawRol else if (idRolReal == 1) "ADMIN" else "USER"
+
                 _state.value = _state.value.copy(
                     loginExitoso = true,
                     id = user?.id ?: 0,
@@ -40,7 +46,9 @@ class LoginViewModel : ViewModel() {
                     token = response.body?.token ?: "",
                     nombre = user?.nombre ?: "",
                     apellido = user?.apellido ?: "",
-                    usuario = user?.usuario ?: ""
+                    usuario = user?.usuario ?: "",
+                    id_rol = idRolReal,
+                    rol = rolReal
                 )
             }.onFailure { error ->
                 _state.value = _state.value.copy(

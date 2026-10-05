@@ -141,6 +141,10 @@ class ProfileRepository {
 
                 val existingUser = loginDao.loadById(intArrayOf(id)).firstOrNull()
                 val passwordToKeep = existingUser?.password ?: ""
+                val parsedIdRol = (userMap["id_rol"] as? Double)?.toInt() 
+                    ?: (userMap["id_rol"] as? Int) 
+                    ?: existingUser?.id_rol 
+                    ?: 0
 
                 val userFromServer = User(
                     id_user = id,
@@ -148,7 +152,9 @@ class ProfileRepository {
                     apellido = userMap["apellido"]?.toString() ?: existingUser?.apellido ?: "",
                     usuario = userMap["usuario"]?.toString() ?: existingUser?.usuario ?: "",
                     password = passwordToKeep,
-                    email = userMap["email"]?.toString() ?: existingUser?.email ?: ""
+                    email = userMap["email"]?.toString() ?: existingUser?.email ?: "",
+                    id_rol = parsedIdRol,
+                    rol = userMap["rol"]?.toString() ?: existingUser?.rol ?: ""
                 )
 
                 // Guardar/Actualizar en SQLite local con la informacion completa

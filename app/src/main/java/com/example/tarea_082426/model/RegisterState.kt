@@ -12,5 +12,7 @@ data class RegisterState(
     val genero: String = "",
     val isLoading: Boolean = false,
     val mensaje: String = "",
-    val registroExitoso: Boolean = false
+    val registroExitoso: Boolean = false,
+    val rolesDisponibles: List<Role> = emptyList(),
+    val rolSeleccionado: Role? = null
 )

@@ -10,5 +10,7 @@ data class RegisterRequest(
     val telefono: String,
     val correo: String,
     val fechaNac: String,
-    val genero: String
+    val genero: String,
+    val id_rol: Int,
+    val role: String
 )

@@ -56,6 +56,7 @@ fun RegisterScreen(
 
     //Menu Dropdown
     var expanded by remember { mutableStateOf(false) }
+    var expandedRol by remember { mutableStateOf(false) }
     val opcionesGenero = listOf("M", "F", "Otro")
 
     //Calendario
@@ -218,6 +219,43 @@ fun RegisterScreen(
                 }
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
+            // Dropdown para Selección de Rol
+            ExposedDropdownMenuBox(
+                expanded = expandedRol,
+                onExpandedChange = { expandedRol = !expandedRol },
+                modifier = Modifier.width(300.dp)
+            ) {
+                OutlinedTextField(
+                    value = state.rolSeleccionado?.rol ?: "Seleccionar Rol",
+                    onValueChange = {},
+                    readOnly = true,
+                    label = { Text("Rol") },
+                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedRol) },
+                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                    modifier = Modifier
+                        .menuAnchor()
+                        .width(300.dp)
+                )
+
+                ExposedDropdownMenu(
+                    expanded = expandedRol,
+                    onDismissRequest = { expandedRol = false }
+                ) {
+                    state.rolesDisponibles.forEach { rolObj ->
+                        DropdownMenuItem(
+                            text = { Text(rolObj.rol) },
+                            onClick = {
+                                registerViewModel.onRolChange(rolObj)
+                                expandedRol = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        )
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
@@ -234,7 +272,7 @@ fun RegisterScreen(
                 onClick = onBackToLogin,
                 modifier = Modifier.width(300.dp)
             ) {
-                Text("Volver al Login")
+                Text("Volver")
             }
 
             if (state.mensaje.isNotEmpty()) {

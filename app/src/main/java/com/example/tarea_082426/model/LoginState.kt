@@ -9,5 +9,7 @@ data class LoginState(
     val token: String = "",
     val nombre: String = "",
     val apellido: String = "",
-    val usuario: String = ""
+    val usuario: String = "",
+    val id_rol: Int = 0,
+    val rol: String = ""
 )

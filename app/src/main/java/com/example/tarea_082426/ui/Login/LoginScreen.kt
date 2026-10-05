@@ -29,8 +29,7 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel = viewModel(),
     //Preparo la data a recibir en un lambda (callback)
-    onLoginSuccess: (id: Int, token: String, nombre: String, apellido: String, usuario: String) -> Unit = { _, _, _, _, _ -> },
-    onRegisterClick: () -> Unit = {}
+    onLoginSuccess: (id: Int, token: String, nombre: String, apellido: String, usuario: String, idRol: Int, rol: String) -> Unit = { _, _, _, _, _, _, _ -> }
 ) {
 
     val state by loginViewModel.state.collectAsState()
@@ -38,7 +37,7 @@ fun LoginScreen(
 
     LaunchedEffect(state.loginExitoso) {
         if (state.loginExitoso) {
-            onLoginSuccess(state.id, state.token, state.nombre, state.apellido, state.usuario)
+            onLoginSuccess(state.id, state.token, state.nombre, state.apellido, state.usuario, state.id_rol, state.rol)
         }
     }
 
@@ -80,14 +79,6 @@ fun LoginScreen(
             modifier = Modifier.width(300.dp)
         ) {
             Text("Ingresar")
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedButton(
-            onClick = onRegisterClick,
-            modifier = Modifier.width(300.dp)
-        ) {
-            Text("Crear Cuenta")
         }
 
         Spacer(modifier = Modifier.height(24.dp))

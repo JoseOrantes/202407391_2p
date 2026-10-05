@@ -27,20 +27,20 @@ class LoginRepository {
                 // Guardamos en local para futuros inicios de sesión offline
                 val userRes = loginResponse.body?.user
                 if (userRes != null) {
-                    // val localUser = User(
-                    //     id_user = userRes.id ?: 0,
-                    //     nombre = userRes.nombre ?: "",
-                    //     apellido = userRes.apellido ?: "",
-                    //     usuario = usuario,
-                    //     password = password
-                    // )
+                    val rawIdRol = userRes.id_rol
+                    val rawRol = userRes.rol
+                    val idRolReal = rawIdRol ?: if (userRes.id == 1 || userRes.email?.contains("admin", ignoreCase = true) == true) 1 else 2
+                    val rolReal = if (!rawRol.isNullOrEmpty()) rawRol else if (idRolReal == 1) "ADMIN" else "USER"
+
                     val localUser = User(
                         id_user = userRes.id ?: 0,
                         nombre = userRes.nombre ?: "",
                         apellido = userRes.apellido ?: "",
                         usuario = userRes.usuario?.ifEmpty { null } ?: usuario,
                         password = password,
-                        email = userRes.email?.ifEmpty { null } ?: usuario
+                        email = userRes.email?.ifEmpty { null } ?: usuario,
+                        id_rol = idRolReal,
+                        rol = rolReal
                     )
                     loginDao.insertAll(localUser)
                 }
@@ -63,8 +63,9 @@ class LoginRepository {
                             nombre = localUser.nombre,
                             apellido = localUser.apellido,
                             usuario = localUser.usuario,
-                            // email = "",
                             email = localUser.email,
+                            id_rol = localUser.id_rol,
+                            rol = localUser.rol,
                             token = "offline_token"
                         )
                     )
