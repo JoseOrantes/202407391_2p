@@ -54,6 +54,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 
+import androidx.compose.ui.res.stringResource
+import com.example.tarea_082426.R
+
 @Composable
 fun ProfileScreen(
     id: Int,
@@ -130,7 +133,7 @@ fun ProfileScreen(
     ) {
 
         Text(
-            text = "Hola!",
+            text = stringResource(R.string.profile_greeting),
             style = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -191,19 +194,19 @@ fun ProfileScreen(
                         CircularProgressIndicator()
                     }
                 } else {
-                    ProfileInfoRow(label = "Nombre", value = displayNombre)
+                    ProfileInfoRow(label = stringResource(R.string.profile_name), value = displayNombre)
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    ProfileInfoRow(label = "Apellido", value = displayApellido)
+                    ProfileInfoRow(label = stringResource(R.string.profile_lastname), value = displayApellido)
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    ProfileInfoRow(label = "Usuario", value = displayUsuario)
+                    ProfileInfoRow(label = stringResource(R.string.profile_username), value = displayUsuario)
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    ProfileInfoRow(label = "Correo", value = state.correo)
+                    ProfileInfoRow(label = stringResource(R.string.profile_email), value = state.correo)
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    ProfileInfoRow(label = "Teléfono", value = state.telefono)
+                    ProfileInfoRow(label = stringResource(R.string.profile_phone), value = state.telefono)
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    ProfileInfoRow(label = "Fecha Nac.", value = state.fechaNac)
+                    ProfileInfoRow(label = stringResource(R.string.profile_birthdate), value = state.fechaNac)
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
-                    ProfileInfoRow(label = "Género", value = state.genero)
+                    ProfileInfoRow(label = stringResource(R.string.profile_gender), value = state.genero)
                 }
             }
         }
@@ -214,15 +217,15 @@ fun ProfileScreen(
             onClick = onBackToDashboardClick,
             modifier = Modifier.width(300.dp)
         ) {
-            Text("Volver al Dashboard")
+            Text(stringResource(R.string.profile_back_dashboard))
         }
     }
     //Dialogo de Alerta
     if (mostrarOpcionesFoto) {
         AlertDialog(
             onDismissRequest = { mostrarOpcionesFoto = false },
-            title = { Text("Foto de perfil") },
-            text = { Text("¿De dónde deseas seleccionar tu imagen?") },
+            title = { Text(stringResource(R.string.profile_dialog_title)) },
+            text = { Text(stringResource(R.string.profile_dialog_msg)) },
             confirmButton = {
                 TextButton  (
                     onClick = {
@@ -230,7 +233,7 @@ fun ProfileScreen(
                         abrirCamara()
                     }
                 ) {
-                    Text("Cámara")
+                    Text(stringResource(R.string.profile_dialog_camera))
                 }
             },
             dismissButton = {
@@ -240,7 +243,7 @@ fun ProfileScreen(
                         galleryLauncher.launch("image/*")
                     }
                 ) {
-                    Text("Galería")
+                    Text(stringResource(R.string.profile_dialog_gallery))
                 }
             }
         )

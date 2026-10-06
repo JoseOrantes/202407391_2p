@@ -12,8 +12,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.tarea_082426.ui.Login.LoginScreen
 import com.example.tarea_082426.ui.Login.LoginViewModel
+import com.example.tarea_082426.ui.censo.CensoScreen
+import com.example.tarea_082426.ui.censo.CensoViewModel
 import com.example.tarea_082426.ui.dashboard.DashboardScreen
 import com.example.tarea_082426.ui.dashboard.DashboardViewModel
+import com.example.tarea_082426.ui.map.MapScreen
+import com.example.tarea_082426.ui.map.MapViewModel
 import com.example.tarea_082426.ui.profile.ProfileScreen
 import com.example.tarea_082426.ui.register.RegisterScreen
 import com.example.tarea_082426.ui.register.RegisterViewModel
@@ -23,6 +27,8 @@ object AppRoutes { // Define las rutas (URLs internas) de la app
     const val PROFILE = "profile/{id}/{token}/{nombre}/{apellido}/{usuario}"
     const val REGISTER = "register"
     const val DASHBOARD = "dashboard/{id}/{nombre}/{usuario}/{idRol}/{rol}"
+    const val MAP = "map"
+    const val CENSO = "censo"
 
     // Genera la ruta dinamica para perfil con sus argumentos
     fun profileRoute(id: Int, token: String, nombre: String, apellido: String, usuario: String): String {
@@ -101,19 +107,38 @@ fun AppNavigator( // El "GPS" de la aplicacion
                     navController.navigate(AppRoutes.profileRoute(id, "", nombre, "", usuario))
                 },
                 onCensoClick = {
-                    // Se conectará a pantalla de censo
+                    navController.navigate(AppRoutes.CENSO)
                 },
                 onRegisterClick = {
                     navController.navigate(AppRoutes.REGISTER)
                 },
                 onMapClick = {
-                    // Mapa callback
+                    navController.navigate(AppRoutes.MAP)
                 },
                 onLogoutClick = {
                     navController.navigate(AppRoutes.LOGIN) {
                         popUpTo(AppRoutes.LOGIN) { inclusive = true }
                     }
                 }
+            )
+        }
+        composable(AppRoutes.CENSO) {
+            val viewModel: CensoViewModel = viewModel()
+            CensoScreen(
+                userId = id,
+                onBackToDashboard = {
+                    navController.popBackStack()
+                },
+                censoViewModel = viewModel
+            )
+        }
+        composable(AppRoutes.MAP) {
+            val viewModel: MapViewModel = viewModel()
+            MapScreen(
+                onBackToDashboard = {
+                    navController.popBackStack()
+                },
+                mapViewModel = viewModel
             )
         }
         composable(

@@ -1,3 +1,70 @@
 <resources>
     <string name="app_name">Tarea_082426</string>
+
+    <!-- Login -->
+    <string name="login_title">Sign In</string>
+    <string name="login_email">Email</string>
+    <string name="login_password">Password</string>
+    <string name="login_button">Sign In</string>
+
+    <!-- Dashboard -->
+    <string name="dashboard_welcome">Welcome %1$s!</string>
+    <string name="dashboard_role">Role: %1$s</string>
+    <string name="dashboard_main_menu">Main Menu</string>
+    <string name="dashboard_view_profile">View Profile</string>
+    <string name="dashboard_map">Map</string>
+    <string name="dashboard_register_user">Register User</string>
+    <string name="dashboard_take_census">Take Census</string>
+    <string name="dashboard_logout">Log Out</string>
+
+    <!-- Profile -->
+    <string name="profile_greeting">Hello!</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_lastname">Last Name</string>
+    <string name="profile_username">Username</string>
+    <string name="profile_email">Email</string>
+    <string name="profile_phone">Phone</string>
+    <string name="profile_birthdate">Birth Date</string>
+    <string name="profile_gender">Gender</string>
+    <string name="profile_back_dashboard">Back to Dashboard</string>
+    <string name="profile_dialog_title">Profile Picture</string>
+    <string name="profile_dialog_msg">Where would you like to select your image from?</string>
+    <string name="profile_dialog_camera">Camera</string>
+    <string name="profile_dialog_gallery">Gallery</string>
+
+    <!-- Register -->
+    <string name="register_title">Create Account</string>
+    <string name="register_name">First Name</string>
+    <string name="register_lastname">Last Name</string>
+    <string name="register_username">Username</string>
+    <string name="register_email">Email</string>
+    <string name="register_password">Password</string>
+    <string name="register_confirm_password">Confirm Password</string>
+    <string name="register_phone">Phone</string>
+    <string name="register_birthdate">Birth Date</string>
+    <string name="register_gender">Gender</string>
+    <string name="register_role">Role</string>
+    <string name="register_button">Register</string>
+    <string name="register_back">Back</string>
+
+    <!-- Census -->
+    <string name="census_title">Census Capture</string>
+    <string name="census_name">First Name</string>
+    <string name="census_lastname">Last Name</string>
+    <string name="census_total_members">Total Members</string>
+    <string name="census_tv_count">TV Count</string>
+    <string name="census_country">Country</string>
+    <string name="census_select_country">Select Country</string>
+    <string name="census_department">Department</string>
+    <string name="census_select_department">Select Department</string>
+    <string name="census_select_country_first">First select a Country</string>
+    <string name="census_municipality">Municipality</string>
+    <string name="census_select_municipality">Select Municipality</string>
+    <string name="census_select_department_first">First select a Department</string>
+    <string name="census_save_button">Save Census</string>
+    <string name="census_back_dashboard">Back to Dashboard</string>
+
+    <!-- Map -->
+    <string name="map_title">Map - %1$d locations</string>
+    <string name="map_back">Back</string>
 </resources>

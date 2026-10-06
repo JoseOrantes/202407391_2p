@@ -20,9 +20,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tarea_082426.R
 
 @Composable //Vuelve el siguiente codigo parte del UI
 fun LoginScreen(
@@ -50,7 +52,7 @@ fun LoginScreen(
     ) {
 
         Text(
-            text = "Iniciar Sesion",
+            text = stringResource(R.string.login_title),
             style = MaterialTheme.typography.headlineMedium
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -58,7 +60,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = state.email,
             onValueChange = { loginViewModel.onEmailChange(it) },
-            label = { Text("Email") },
+            label = { Text(stringResource(R.string.login_email)) },
             modifier = Modifier.width(300.dp)
         )
         Spacer(modifier = Modifier.height(16.dp))
@@ -66,7 +68,7 @@ fun LoginScreen(
         OutlinedTextField(
             value = state.password,
             onValueChange = { loginViewModel.onPasswordChange(it) },
-            label = { Text("Password") },
+            label = { Text(stringResource(R.string.login_password)) },
             visualTransformation = PasswordVisualTransformation(),
             modifier = Modifier.width(300.dp)
         )
@@ -78,7 +80,7 @@ fun LoginScreen(
             },
             modifier = Modifier.width(300.dp)
         ) {
-            Text("Ingresar")
+            Text(stringResource(R.string.login_button))
         }
 
         Spacer(modifier = Modifier.height(24.dp))

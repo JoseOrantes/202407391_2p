@@ -1,4 +1,70 @@
 package com.example.tarea_082426.data
 
+import com.example.tarea_082426.data.remote.RetrofitClient
+import com.example.tarea_082426.model.MarkerItem
+import com.google.android.gms.maps.model.LatLng
+
 class MapRepository {
+    private val apiMap = RetrofitClient.apiMap
+
+    suspend fun getCensosMarkers(): Result<List<MarkerItem>> {
+        return try {
+            val response = apiMap.getCensos()
+            if (response.isSuccessful && response.body() != null) {
+                val rawBody = response.body()!!
+                val markers = mutableListOf<MarkerItem>()
+
+                val rawList = (rawBody as? List<*>)
+                    ?: ((rawBody as? Map<*, *>)?.get("body") as? List<*>)
+                    ?: ((rawBody as? Map<*, *>)?.get("censos") as? List<*>)
+
+                rawList?.forEach { item ->
+                    if (item is Map<*, *>) {
+                        val nombre = item["nombre"]?.toString() ?: ""
+                        val apellido = item["apellido"]?.toString() ?: ""
+                        val miembros = (item["total_miembros"] as? Double)?.toInt() 
+                            ?: (item["total_miembros"] as? Int) ?: 1
+                        val tvs = (item["cantidad_televisiones"] as? Double)?.toInt() 
+                            ?: (item["cantidad_televisiones"] as? Int) ?: 0
+
+                        val lat = (item["latitud"] as? Double) 
+                            ?: (item["lat"] as? Double) ?: 14.6349
+                        val lng = (item["longitud"] as? Double) 
+                            ?: (item["lng"] as? Double) ?: -90.5069
+
+                        val muniNombre = item["municipio_nombre"]?.toString() 
+                            ?: item["nombre_municipio"]?.toString() 
+                            ?: item["municipio"]?.toString() ?: ""
+
+                        val title = if (muniNombre.isNotEmpty()) "$nombre $apellido ($muniNombre)" else "$nombre $apellido"
+                        val snippet = "Miembros: $miembros, TVs: $tvs"
+
+                        markers.add(
+                            MarkerItem(
+                                position = LatLng(lat, lng),
+                                title = title,
+                                snippet = snippet
+                            )
+                        )
+                    }
+                }
+
+                if (markers.isNotEmpty()) {
+                    Result.success(markers)
+                } else {
+                    Result.success(listOf(
+                        MarkerItem(LatLng(14.6349, -90.5069), "Ciudad de Guatemala", "Capital")
+                    ))
+                }
+            } else {
+                Result.success(listOf(
+                    MarkerItem(LatLng(14.6349, -90.5069), "Ciudad de Guatemala", "Capital")
+                ))
+            }
+        } catch (e: Exception) {
+            Result.success(listOf(
+                MarkerItem(LatLng(14.6349, -90.5069), "Ciudad de Guatemala", "Capital")
+            ))
+        }
+    }
 }

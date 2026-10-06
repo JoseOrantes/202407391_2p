@@ -44,6 +44,9 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
+import androidx.compose.ui.res.stringResource
+import com.example.tarea_082426.R
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegisterScreen(
@@ -101,7 +104,7 @@ fun RegisterScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Crear Cuenta",
+                text = stringResource(R.string.register_title),
                 style = MaterialTheme.typography.headlineMedium
             )
             Spacer(modifier = Modifier.height(24.dp))
@@ -109,7 +112,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.nombre,
                 onValueChange = { registerViewModel.onNombreChange(it) },
-                label = { Text("Nombre") },
+                label = { Text(stringResource(R.string.register_name)) },
                 modifier = Modifier.width(300.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -117,7 +120,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.apellido,
                 onValueChange = { registerViewModel.onApellidoChange(it) },
-                label = { Text("Apellido") },
+                label = { Text(stringResource(R.string.register_lastname)) },
                 modifier = Modifier.width(300.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -125,7 +128,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.usuario,
                 onValueChange = { registerViewModel.onUsuarioChange(it) },
-                label = { Text("Usuario") },
+                label = { Text(stringResource(R.string.register_username)) },
                 modifier = Modifier.width(300.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -133,7 +136,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.correo,
                 onValueChange = { registerViewModel.onCorreoChange(it) },
-                label = { Text("Correo Electrónico") },
+                label = { Text(stringResource(R.string.register_email)) },
                 modifier = Modifier.width(300.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -141,7 +144,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.password,
                 onValueChange = { registerViewModel.onPasswordChange(it) },
-                label = { Text("Contraseña") },
+                label = { Text(stringResource(R.string.register_password)) },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.width(300.dp)
             )
@@ -150,7 +153,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.password1,
                 onValueChange = { registerViewModel.onPassword1Change(it) },
-                label = { Text("Compruebe Contraseña") },
+                label = { Text(stringResource(R.string.register_confirm_password)) },
                 visualTransformation = PasswordVisualTransformation(),
                 modifier = Modifier.width(300.dp)
             )
@@ -159,7 +162,7 @@ fun RegisterScreen(
             OutlinedTextField(
                 value = state.telefono,
                 onValueChange = { registerViewModel.onTelefonoChange(it) },
-                label = { Text("Teléfono") },
+                label = { Text(stringResource(R.string.register_phone)) },
                 modifier = Modifier.width(300.dp)
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -169,7 +172,7 @@ fun RegisterScreen(
                 OutlinedTextField(
                     value = state.fechaNac,
                     onValueChange = { },
-                    label = { Text("Fecha Nacimiento") },
+                    label = { Text(stringResource(R.string.register_birthdate)) },
                     readOnly = true, // Evita que se abra el teclado
                     modifier = Modifier.width(300.dp)
                 )
@@ -194,7 +197,7 @@ fun RegisterScreen(
                     value = state.genero,
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Género") },
+                    label = { Text(stringResource(R.string.register_gender)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                     modifier = Modifier
@@ -228,10 +231,10 @@ fun RegisterScreen(
                 modifier = Modifier.width(300.dp)
             ) {
                 OutlinedTextField(
-                    value = state.rolSeleccionado?.rol ?: "Seleccionar Rol",
+                    value = state.rolSeleccionado?.rol ?: stringResource(R.string.register_role),
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Rol") },
+                    label = { Text(stringResource(R.string.register_role)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedRol) },
                     colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                     modifier = Modifier
@@ -263,7 +266,7 @@ fun RegisterScreen(
                 modifier = Modifier.width(300.dp),
                 enabled = !state.isLoading
             ) {
-                Text("Registrarse")
+                Text(stringResource(R.string.register_button))
             }
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -272,7 +275,7 @@ fun RegisterScreen(
                 onClick = onBackToLogin,
                 modifier = Modifier.width(300.dp)
             ) {
-                Text("Volver")
+                Text(stringResource(R.string.register_back))
             }
 
             if (state.mensaje.isNotEmpty()) {

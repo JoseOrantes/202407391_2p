@@ -68,4 +68,9 @@ dependencies {
     // Room 3
     implementation(libs.room.runtime)
     ksp(libs.room.compiler)
+
+    // Maps & Location
+    implementation(libs.play.services.location)
+    implementation(libs.play.services.maps)
+    implementation(libs.maps.compose)
 }

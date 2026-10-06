@@ -17,7 +17,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            Tarea_082426Theme {
+            Tarea_082426Theme(
+                darkTheme = false,
+                dynamicColor = false
+            )
+            {
+
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     AppNavigator(
                         modifier = Modifier.padding(innerPadding)

@@ -33,4 +33,12 @@ object RetrofitClient {
     val apiRegister: ApiRegister by lazy {
         retrofit.create(ApiRegister::class.java)
     }
+
+    val apiCenso: ApiCenso by lazy {
+        retrofit.create(ApiCenso::class.java)
+    }
+
+    val apiMap: ApiMap by lazy {
+        retrofit.create(ApiMap::class.java)
+    }
 }

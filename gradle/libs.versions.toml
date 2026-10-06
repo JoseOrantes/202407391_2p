@@ -17,6 +17,9 @@ retrofit = "3.0.0"
 okhttp = "5.0.0-alpha.14"
 ksp = "2.3.12"
 room = "3.0.3"
+playServicesLocation = "21.3.0"
+playServicesMaps = "19.0.0"
+mapsCompose = "6.2.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -44,6 +47,9 @@ okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhtt
 okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
 room-runtime = { group = "androidx.room3", name = "room3-runtime", version.ref = "room" }
 room-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref = "room" }
+play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
+play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
+maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

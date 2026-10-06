@@ -24,6 +24,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 
+import androidx.compose.ui.res.stringResource
+import com.example.tarea_082426.R
+
 @Composable
 fun DashboardScreen(
     id: Int,
@@ -52,15 +55,16 @@ fun DashboardScreen(
     ) {
 
         Text(
-            text = "Bienvenido $usuario!",
+            text = stringResource(R.string.dashboard_welcome, usuario),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
+        val rolNombre = if (esAdmin) "ADMIN" else if (rol.isNotEmpty()) rol else "CENSISTA"
         Text(
-            text = "Rol: ${if (esAdmin) "ADMIN" else if (rol.isNotEmpty()) rol else "CENSISTA"}",
+            text = stringResource(R.string.dashboard_role, rolNombre),
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.secondary
         )
@@ -78,7 +82,7 @@ fun DashboardScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Menú Principal",
+                    text = stringResource(R.string.dashboard_main_menu),
                     style = MaterialTheme.typography.titleMedium,
                     fontWeight = FontWeight.Bold
                 )
@@ -90,7 +94,7 @@ fun DashboardScreen(
                     onClick = onProfileClick,
                     modifier = Modifier.width(280.dp)
                 ) {
-                    Text("Ver Perfil")
+                    Text(stringResource(R.string.dashboard_view_profile))
                 }
 
                 Spacer(modifier = Modifier.height(12.dp))
@@ -101,7 +105,7 @@ fun DashboardScreen(
                         onClick = onMapClick,
                         modifier = Modifier.width(280.dp)
                     ) {
-                        Text("Mapa")
+                        Text(stringResource(R.string.dashboard_map))
                     }
 
                     Spacer(modifier = Modifier.height(12.dp))
@@ -110,7 +114,7 @@ fun DashboardScreen(
                         onClick = onRegisterClick,
                         modifier = Modifier.width(280.dp)
                     ) {
-                        Text("Registrar Usuario")
+                        Text(stringResource(R.string.dashboard_register_user))
                     }
                 } else {
                     // Opción exclusiva para CENSISTA / USER (idRol == 2)
@@ -118,7 +122,7 @@ fun DashboardScreen(
                         onClick = onCensoClick,
                         modifier = Modifier.width(280.dp)
                     ) {
-                        Text("Tomar Censo")
+                        Text(stringResource(R.string.dashboard_take_census))
                     }
                 }
             }
@@ -133,7 +137,7 @@ fun DashboardScreen(
                 contentColor = MaterialTheme.colorScheme.error
             )
         ) {
-            Text("Cerrar Sesión")
+            Text(stringResource(R.string.dashboard_logout))
         }
     }
 }
