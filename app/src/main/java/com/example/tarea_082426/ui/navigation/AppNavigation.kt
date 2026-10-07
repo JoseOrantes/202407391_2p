@@ -28,7 +28,7 @@ object AppRoutes { // Define las rutas (URLs internas) de la app
     const val REGISTER = "register"
     const val DASHBOARD = "dashboard/{id}/{nombre}/{usuario}/{idRol}/{rol}"
     const val MAP = "map"
-    const val CENSO = "censo"
+    const val CENSO = "censo/{userId}"
 
     // Genera la ruta dinamica para perfil con sus argumentos
     fun profileRoute(id: Int, token: String, nombre: String, apellido: String, usuario: String): String {
@@ -37,6 +37,10 @@ object AppRoutes { // Define las rutas (URLs internas) de la app
         val encApellido = Uri.encode(apellido)
         val encUsuario = Uri.encode(usuario)
         return "profile/$id/$encToken/$encNombre/$encApellido/$encUsuario"
+    }
+
+    fun censoRoute(userId: Int): String {
+        return "censo/$userId"
     }
 
     fun dashboardRoute(id: Int, nombre: String, usuario: String, idRol: Int, rol: String): String {
@@ -107,7 +111,7 @@ fun AppNavigator( // El "GPS" de la aplicacion
                     navController.navigate(AppRoutes.profileRoute(id, "", nombre, "", usuario))
                 },
                 onCensoClick = {
-                    navController.navigate(AppRoutes.CENSO)
+                    navController.navigate(AppRoutes.censoRoute(id))
                 },
                 onRegisterClick = {
                     navController.navigate(AppRoutes.REGISTER)
@@ -122,12 +126,19 @@ fun AppNavigator( // El "GPS" de la aplicacion
                 }
             )
         }
-        composable(AppRoutes.CENSO) {
+        composable(
+            route = AppRoutes.CENSO,
+            arguments = listOf(navArgument("userId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getInt("userId") ?: 0
             val viewModel: CensoViewModel = viewModel()
             CensoScreen(
-                userId = id,
+                userId = userId,
                 onBackToDashboard = {
                     navController.popBackStack()
+                },
+                onMapClick = {
+                    navController.navigate(AppRoutes.MAP)
                 },
                 censoViewModel = viewModel
             )

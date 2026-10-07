@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DatePicker
 import androidx.compose.material3.DatePickerDialog
@@ -109,164 +111,173 @@ fun RegisterScreen(
             )
             Spacer(modifier = Modifier.height(24.dp))
 
-            OutlinedTextField(
-                value = state.nombre,
-                onValueChange = { registerViewModel.onNombreChange(it) },
-                label = { Text(stringResource(R.string.register_name)) },
-                modifier = Modifier.width(300.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = state.apellido,
-                onValueChange = { registerViewModel.onApellidoChange(it) },
-                label = { Text(stringResource(R.string.register_lastname)) },
-                modifier = Modifier.width(300.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = state.usuario,
-                onValueChange = { registerViewModel.onUsuarioChange(it) },
-                label = { Text(stringResource(R.string.register_username)) },
-                modifier = Modifier.width(300.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = state.correo,
-                onValueChange = { registerViewModel.onCorreoChange(it) },
-                label = { Text(stringResource(R.string.register_email)) },
-                modifier = Modifier.width(300.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = state.password,
-                onValueChange = { registerViewModel.onPasswordChange(it) },
-                label = { Text(stringResource(R.string.register_password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.width(300.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = state.password1,
-                onValueChange = { registerViewModel.onPassword1Change(it) },
-                label = { Text(stringResource(R.string.register_confirm_password)) },
-                visualTransformation = PasswordVisualTransformation(),
-                modifier = Modifier.width(300.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            OutlinedTextField(
-                value = state.telefono,
-                onValueChange = { registerViewModel.onTelefonoChange(it) },
-                label = { Text(stringResource(R.string.register_phone)) },
-                modifier = Modifier.width(300.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            //Fecha nacimiento
-            Box(modifier = Modifier.width(300.dp)) {
-                OutlinedTextField(
-                    value = state.fechaNac,
-                    onValueChange = { },
-                    label = { Text(stringResource(R.string.register_birthdate)) },
-                    readOnly = true, // Evita que se abra el teclado
-                    modifier = Modifier.width(300.dp)
-                )
-                //Detecta el cambio para fecha nac.
-                Box(
-                    modifier = Modifier
-                        .matchParentSize()
-                        .alpha(0f)
-                        .clickable { showDatePicker = true }
-                )
-            }
-            // -----------------------------------------------------------
-            
-            Spacer(modifier = Modifier.height(8.dp))
-
-            ExposedDropdownMenuBox(
-                expanded = expanded,
-                onExpandedChange = { expanded = !expanded },
-                modifier = Modifier.width(300.dp)
+            Card(
+                modifier = Modifier.width(360.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
             ) {
-                OutlinedTextField(
-                    value = state.genero,
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text(stringResource(R.string.register_gender)) },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                    modifier = Modifier
-                        .menuAnchor()
-                        .width(300.dp)
-                )
-
-                ExposedDropdownMenu(
-                    expanded = expanded,
-                    onDismissRequest = { expanded = false }
+                Column(
+                    modifier = Modifier.padding(24.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    opcionesGenero.forEach { opcion ->
-                        DropdownMenuItem(
-                            text = { Text(opcion) },
-                            onClick = {
-                                registerViewModel.onGeneroChange(opcion)
-                                expanded = false
-                            },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    OutlinedTextField(
+                        value = state.nombre,
+                        onValueChange = { registerViewModel.onNombreChange(it) },
+                        label = { Text(stringResource(R.string.register_name)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = state.apellido,
+                        onValueChange = { registerViewModel.onApellidoChange(it) },
+                        label = { Text(stringResource(R.string.register_lastname)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = state.usuario,
+                        onValueChange = { registerViewModel.onUsuarioChange(it) },
+                        label = { Text(stringResource(R.string.register_username)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = state.correo,
+                        onValueChange = { registerViewModel.onCorreoChange(it) },
+                        label = { Text(stringResource(R.string.register_email)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = state.password,
+                        onValueChange = { registerViewModel.onPasswordChange(it) },
+                        label = { Text(stringResource(R.string.register_password)) },
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = state.password1,
+                        onValueChange = { registerViewModel.onPassword1Change(it) },
+                        label = { Text(stringResource(R.string.register_confirm_password)) },
+                        visualTransformation = PasswordVisualTransformation(),
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    OutlinedTextField(
+                        value = state.telefono,
+                        onValueChange = { registerViewModel.onTelefonoChange(it) },
+                        label = { Text(stringResource(R.string.register_phone)) },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    //Fecha nacimiento
+                    Box(modifier = Modifier.fillMaxWidth()) {
+                        OutlinedTextField(
+                            value = state.fechaNac,
+                            onValueChange = { },
+                            label = { Text(stringResource(R.string.register_birthdate)) },
+                            readOnly = true, // Evita que se abra el teclado
+                            modifier = Modifier.fillMaxWidth()
+                        )
+                        //Detecta el cambio para fecha nac.
+                        Box(
+                            modifier = Modifier
+                                .matchParentSize()
+                                .alpha(0f)
+                                .clickable { showDatePicker = true }
                         )
                     }
-                }
-            }
 
-            Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(8.dp))
 
-            // Dropdown para Selección de Rol
-            ExposedDropdownMenuBox(
-                expanded = expandedRol,
-                onExpandedChange = { expandedRol = !expandedRol },
-                modifier = Modifier.width(300.dp)
-            ) {
-                OutlinedTextField(
-                    value = state.rolSeleccionado?.rol ?: stringResource(R.string.register_role),
-                    onValueChange = {},
-                    readOnly = true,
-                    label = { Text(stringResource(R.string.register_role)) },
-                    trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedRol) },
-                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                    modifier = Modifier
-                        .menuAnchor()
-                        .width(300.dp)
-                )
-
-                ExposedDropdownMenu(
-                    expanded = expandedRol,
-                    onDismissRequest = { expandedRol = false }
-                ) {
-                    state.rolesDisponibles.forEach { rolObj ->
-                        DropdownMenuItem(
-                            text = { Text(rolObj.rol) },
-                            onClick = {
-                                registerViewModel.onRolChange(rolObj)
-                                expandedRol = false
-                            },
-                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    ExposedDropdownMenuBox(
+                        expanded = expanded,
+                        onExpandedChange = { expanded = !expanded },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = state.genero,
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text(stringResource(R.string.register_gender)) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth()
                         )
+
+                        ExposedDropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
+                        ) {
+                            opcionesGenero.forEach { opcion ->
+                                DropdownMenuItem(
+                                    text = { Text(opcion) },
+                                    onClick = {
+                                        registerViewModel.onGeneroChange(opcion)
+                                        expanded = false
+                                    },
+                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    // Dropdown para Selección de Rol
+                    ExposedDropdownMenuBox(
+                        expanded = expandedRol,
+                        onExpandedChange = { expandedRol = !expandedRol },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        OutlinedTextField(
+                            value = state.rolSeleccionado?.rol ?: stringResource(R.string.register_role),
+                            onValueChange = {},
+                            readOnly = true,
+                            label = { Text(stringResource(R.string.register_role)) },
+                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedRol) },
+                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                            modifier = Modifier
+                                .menuAnchor()
+                                .fillMaxWidth()
+                        )
+
+                        ExposedDropdownMenu(
+                            expanded = expandedRol,
+                            onDismissRequest = { expandedRol = false }
+                        ) {
+                            state.rolesDisponibles.forEach { rolObj ->
+                                DropdownMenuItem(
+                                    text = { Text(rolObj.rol) },
+                                    onClick = {
+                                        registerViewModel.onRolChange(rolObj)
+                                        expandedRol = false
+                                    },
+                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                                )
+                            }
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(24.dp))
+
+                    Button(
+                        onClick = { registerViewModel.onRegisterClick() },
+                        modifier = Modifier.fillMaxWidth(),
+                        enabled = !state.isLoading
+                    ) {
+                        Text(stringResource(R.string.register_button))
                     }
                 }
-            }
-
-            Spacer(modifier = Modifier.height(24.dp))
-
-            Button(
-                onClick = { registerViewModel.onRegisterClick() },
-                modifier = Modifier.width(300.dp),
-                enabled = !state.isLoading
-            ) {
-                Text(stringResource(R.string.register_button))
             }
 
             Spacer(modifier = Modifier.height(16.dp))

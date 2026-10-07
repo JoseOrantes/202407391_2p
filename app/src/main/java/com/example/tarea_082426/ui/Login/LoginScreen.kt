@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -57,30 +59,40 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.height(24.dp))
 
-        OutlinedTextField(
-            value = state.email,
-            onValueChange = { loginViewModel.onEmailChange(it) },
-            label = { Text(stringResource(R.string.login_email)) },
-            modifier = Modifier.width(300.dp)
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-
-        OutlinedTextField(
-            value = state.password,
-            onValueChange = { loginViewModel.onPasswordChange(it) },
-            label = { Text(stringResource(R.string.login_password)) },
-            visualTransformation = PasswordVisualTransformation(),
-            modifier = Modifier.width(300.dp)
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = {
-                loginViewModel.onLoginClick(context)
-            },
-            modifier = Modifier.width(300.dp)
+        Card(
+            modifier = Modifier.width(360.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
         ) {
-            Text(stringResource(R.string.login_button))
+            Column(
+                modifier = Modifier.padding(24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                OutlinedTextField(
+                    value = state.email,
+                    onValueChange = { loginViewModel.onEmailChange(it) },
+                    label = { Text(stringResource(R.string.login_email)) },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+
+                OutlinedTextField(
+                    value = state.password,
+                    onValueChange = { loginViewModel.onPasswordChange(it) },
+                    label = { Text(stringResource(R.string.login_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+
+                Button(
+                    onClick = {
+                        loginViewModel.onLoginClick(context)
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text(stringResource(R.string.login_button))
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(24.dp))
