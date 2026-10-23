@@ -20,6 +20,10 @@ room = "3.0.3"
 playServicesLocation = "21.3.0"
 playServicesMaps = "19.0.0"
 mapsCompose = "6.2.1"
+amplify = "2.14.0"
+amplifyUi = "1.3.0"
+coroutines = "1.8.0"
+desugar = "2.0.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -50,6 +54,10 @@ room-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
+amplify-ui-liveness = { group = "com.amplifyframework.ui", name = "liveness", version.ref = "amplifyUi" }
+amplify-aws-auth-cognito = { group = "com.amplifyframework", name = "aws-auth-cognito", version.ref = "amplify" }
+kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
