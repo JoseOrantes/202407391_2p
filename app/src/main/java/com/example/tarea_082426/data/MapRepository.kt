@@ -27,10 +27,12 @@ class MapRepository {
                         val tvs = (item["cantidad_televisiones"] as? Double)?.toInt() 
                             ?: (item["cantidad_televisiones"] as? Int) ?: 0
 
-                        val lat = (item["latitud"] as? Double) 
-                            ?: (item["lat"] as? Double) ?: 14.6349
-                        val lng = (item["longitud"] as? Double) 
-                            ?: (item["lng"] as? Double) ?: -90.5069
+                        val lat = item["latitud"]?.toString()?.toDoubleOrNull() 
+                            ?: item["lat"]?.toString()?.toDoubleOrNull() 
+                            ?: 14.6349
+                        val lng = item["longitud"]?.toString()?.toDoubleOrNull() 
+                            ?: item["lng"]?.toString()?.toDoubleOrNull() 
+                            ?: -90.5069
 
                         val muniNombre = item["municipio_nombre"]?.toString() 
                             ?: item["nombre_municipio"]?.toString() 

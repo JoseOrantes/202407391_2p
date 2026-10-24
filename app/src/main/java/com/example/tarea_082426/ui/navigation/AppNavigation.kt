@@ -2,6 +2,8 @@ package com.example.tarea_082426.ui.navigation
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
@@ -132,6 +134,19 @@ fun AppNavigator( // El "GPS" de la aplicacion
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getInt("userId") ?: 0
             val viewModel: CensoViewModel = viewModel()
+
+            val savedStateHandle = backStackEntry.savedStateHandle
+            val selectedLat = savedStateHandle.getStateFlow<Double?>("selected_lat", null).collectAsState()
+            val selectedLng = savedStateHandle.getStateFlow<Double?>("selected_lng", null).collectAsState()
+
+            LaunchedEffect(selectedLat.value, selectedLng.value) {
+                if (selectedLat.value != null && selectedLng.value != null) {
+                    viewModel.onUbicacionSeleccionada(selectedLat.value!!, selectedLng.value!!)
+                    savedStateHandle.remove<Double>("selected_lat")
+                    savedStateHandle.remove<Double>("selected_lng")
+                }
+            }
+
             CensoScreen(
                 userId = userId,
                 onBackToDashboard = {
@@ -147,6 +162,11 @@ fun AppNavigator( // El "GPS" de la aplicacion
             val viewModel: MapViewModel = viewModel()
             MapScreen(
                 onBackToDashboard = {
+                    navController.popBackStack()
+                },
+                onLocationSelected = { lat, lng ->
+                    navController.previousBackStackEntry?.savedStateHandle?.set("selected_lat", lat)
+                    navController.previousBackStackEntry?.savedStateHandle?.set("selected_lng", lng)
                     navController.popBackStack()
                 },
                 mapViewModel = viewModel

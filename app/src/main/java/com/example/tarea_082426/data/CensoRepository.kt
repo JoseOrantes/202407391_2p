@@ -6,6 +6,7 @@ import com.example.tarea_082426.model.Municipio
 import com.example.tarea_082426.model.Pais
 import com.example.tarea_082426.model.request.CensoRequest
 import com.example.tarea_082426.model.response.StandardResponse
+import retrofit2.Response
 
 class CensoRepository {
     private val apiCenso = RetrofitClient.apiCenso
@@ -173,7 +174,7 @@ class CensoRepository {
                 Result.failure(Exception(err))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Error de conexión al guardar censo: ${e.message}"))
+            Result.failure(Exception("Error al conectar con la API: ${e.message}"))
         }
     }
 }

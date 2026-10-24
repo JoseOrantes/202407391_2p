@@ -20,7 +20,8 @@ fun MapComponent(
     cameraPosition: LatLng,
     zoom: Float,
     modifier: Modifier = Modifier,
-    onMarkerClick: (MarkerItem) -> Unit = {}
+    onMarkerClick: (MarkerItem) -> Unit = {},
+    onMapClick: (LatLng) -> Unit = {}
 ) {
     val cameraState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(cameraPosition, zoom)
@@ -36,7 +37,8 @@ fun MapComponent(
 
     GoogleMap(
         modifier = modifier.fillMaxSize(),
-        cameraPositionState = cameraState
+        cameraPositionState = cameraState,
+        onMapClick = onMapClick
     ) {
         markers.forEach { marker ->
             val markerState = remember(marker.position) { MarkerState(position = marker.position) }

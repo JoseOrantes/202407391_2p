@@ -11,6 +11,9 @@ data class CensoState(
     val departamentoSeleccionado: Departamento? = null,
     val municipiosDisponibles: List<Municipio> = emptyList(),
     val municipioSeleccionado: Municipio? = null,
+    // Coordenadas seleccionadas en mapa
+    val latitud: Double? = null,
+    val longitud: Double? = null,
     val isLoading: Boolean = false,
     val mensaje: String = "",
     val censoGuardadoExitoso: Boolean = false

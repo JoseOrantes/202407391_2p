@@ -27,4 +27,19 @@ interface ApiCenso {
 
     @POST("api/censos")
     suspend fun guardarCenso(@Body request: CensoRequest): Response<StandardResponse>
+
+    @POST("api/censo")
+    suspend fun guardarCensoSingular(@Body request: CensoRequest): Response<StandardResponse>
+
+    @POST("api/users/{userId}/censos")
+    suspend fun guardarCensoUser(@Path("userId") userId: Int, @Body request: CensoRequest): Response<StandardResponse>
+
+    @POST("api/users/{userId}/censo")
+    suspend fun guardarCensoUserSingular(@Path("userId") userId: Int, @Body request: CensoRequest): Response<StandardResponse>
+
+    @POST("api/censos/crear")
+    suspend fun guardarCensoCrear(@Body request: CensoRequest): Response<StandardResponse>
+
+    @POST("api/censo/crear")
+    suspend fun guardarCensoSingularCrear(@Body request: CensoRequest): Response<StandardResponse>
 }

@@ -5,6 +5,8 @@ data class CensoRequest(
     val apellido: String,
     val total_miembros: Int,
     val cantidad_televisiones: Int,
-    val id_municipio: Int,
-    val id_user: Int
+    val id_municipio: Int = 1,
+    val id_user: Int,
+    val latitud: Double? = null,
+    val longitud: Double? = null
 )
