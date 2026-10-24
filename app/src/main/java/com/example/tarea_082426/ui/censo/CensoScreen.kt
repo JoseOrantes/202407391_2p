@@ -118,9 +118,10 @@ fun CensoScreen(
                     )
                     Spacer(modifier = Modifier.height(16.dp))
 
+                    // Muestra coordenadas si ya fueron seleccionadas
                     if (state.latitud != null && state.longitud != null) {
                         Text(
-                            text = "Ubicación seleccionada:\nLat: ${state.latitud}, Lng: ${state.longitud}",
+                            text = stringResource(R.string.map_selected_location, state.latitud!!, state.longitud!!),
                             style = MaterialTheme.typography.bodyMedium,
                             fontWeight = FontWeight.Bold,
                             color = MaterialTheme.colorScheme.primary
@@ -128,11 +129,12 @@ fun CensoScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
+                    // Botón para abrir el mapa
                     Button(
                         onClick = onMapClick,
                         modifier = Modifier.fillMaxWidth()
                     ) {
-                        Text("Mapa")
+                        Text(stringResource(R.string.map_select_location))
                     }
 
                     /*

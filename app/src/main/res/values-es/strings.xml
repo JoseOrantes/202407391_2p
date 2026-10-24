@@ -67,4 +67,7 @@
     <!-- Map -->
     <string name="map_title">Mapa - %1$d ubicaciones</string>
     <string name="map_back">Volver</string>
+    <string name="map_confirm_location">Confirmar Ubicación (%1$.4f, %2$.4f)</string>
+    <string name="map_select_location">Mapa (Seleccionar Ubicación)</string>
+    <string name="map_selected_location">Ubicación seleccionada:\nLat: %1$.4f, Lng: %2$.4f</string>
 </resources>

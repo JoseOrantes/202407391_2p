@@ -164,6 +164,7 @@ class CensoRepository {
         }
     }
 
+    // Petición POST para guardar censo
     suspend fun guardarCenso(request: CensoRequest): Result<StandardResponse> {
         return try {
             val response = apiCenso.guardarCenso(request)

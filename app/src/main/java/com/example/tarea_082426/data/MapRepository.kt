@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 class MapRepository {
     private val apiMap = RetrofitClient.apiMap
 
+    // Petición GET para obtener censos
     suspend fun getCensosMarkers(): Result<List<MarkerItem>> {
         return try {
             val response = apiMap.getCensos()
@@ -14,10 +15,12 @@ class MapRepository {
                 val rawBody = response.body()!!
                 val markers = mutableListOf<MarkerItem>()
 
+                // Extrae lista de censos desde respuesta JSON
                 val rawList = (rawBody as? List<*>)
                     ?: ((rawBody as? Map<*, *>)?.get("body") as? List<*>)
                     ?: ((rawBody as? Map<*, *>)?.get("censos") as? List<*>)
 
+                // Mapeo de cada censo a marcador
                 rawList?.forEach { item ->
                     if (item is Map<*, *>) {
                         val nombre = item["nombre"]?.toString() ?: ""

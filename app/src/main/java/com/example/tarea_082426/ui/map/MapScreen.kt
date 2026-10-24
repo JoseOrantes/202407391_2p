@@ -36,9 +36,11 @@ fun MapScreen(
     onLocationSelected: ((Double, Double) -> Unit)? = null,
     mapViewModel: MapViewModel = viewModel()
 ) {
+    // Estado de marcadores y ubicación elegida
     val state by mapViewModel.state.collectAsState()
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
 
+    // Carga inicial de censos desde API
     LaunchedEffect(Unit) {
         mapViewModel.cargarCensosDesdeAPI()
     }
@@ -67,8 +69,12 @@ fun MapScreen(
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            val allMarkers = if (selectedLocation != null) {
-                state.markers + MarkerItem(selectedLocation!!, "Ubicación Seleccionada", "Toca confirmar abajo")
+            // Modo selección únicamente para Censista
+            val isSelectingLocation = onLocationSelected != null
+
+            // Lista de marcadores más selección activa
+            val allMarkers = if (isSelectingLocation && selectedLocation != null) {
+                state.markers + MarkerItem(selectedLocation!!, "Selected Location", "")
             } else {
                 state.markers
             }
@@ -78,11 +84,14 @@ fun MapScreen(
                 cameraPosition = state.cameraPosition,
                 zoom = state.zoom,
                 onMapClick = { latLng ->
-                    selectedLocation = latLng
+                    if (isSelectingLocation) {
+                        selectedLocation = latLng
+                    }
                 }
             )
 
-            if (selectedLocation != null && onLocationSelected != null) {
+            // Botón de confirmación de coordenadas para Censista
+            if (onLocationSelected != null && selectedLocation != null) {
                 Button(
                     onClick = {
                         onLocationSelected(selectedLocation!!.latitude, selectedLocation!!.longitude)
@@ -91,7 +100,7 @@ fun MapScreen(
                         .align(Alignment.BottomCenter)
                         .padding(24.dp)
                 ) {
-                    Text("Confirmar Ubicación (${String.format("%.4f", selectedLocation!!.latitude)}, ${String.format("%.4f", selectedLocation!!.longitude)})")
+                    Text(stringResource(R.string.map_confirm_location, selectedLocation!!.latitude, selectedLocation!!.longitude))
                 }
             }
         }

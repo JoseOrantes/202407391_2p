@@ -63,6 +63,7 @@ fun AppNavigator( // El "GPS" de la aplicacion
         startDestination = AppRoutes.LOGIN,
         modifier = modifier
     ) {
+        // Pantalla de inicio de sesión
         composable(AppRoutes.LOGIN) {
             val viewModel: LoginViewModel = viewModel()
             LoginScreen(
@@ -75,6 +76,7 @@ fun AppNavigator( // El "GPS" de la aplicacion
                 modifier = Modifier
             )
         }
+        // Registro de usuario
         composable(AppRoutes.REGISTER) {
             val viewModel: RegisterViewModel = viewModel()
             RegisterScreen(
@@ -87,6 +89,7 @@ fun AppNavigator( // El "GPS" de la aplicacion
                 registerViewModel = viewModel
             )
         }
+        // Menú principal adaptativo por rol
         composable(
             route = AppRoutes.DASHBOARD,
             arguments = listOf(
@@ -128,6 +131,7 @@ fun AppNavigator( // El "GPS" de la aplicacion
                 }
             )
         }
+        // Captura de censo y retorno de coordenadas
         composable(
             route = AppRoutes.CENSO,
             arguments = listOf(navArgument("userId") { type = NavType.IntType })
@@ -135,6 +139,7 @@ fun AppNavigator( // El "GPS" de la aplicacion
             val userId = backStackEntry.arguments?.getInt("userId") ?: 0
             val viewModel: CensoViewModel = viewModel()
 
+            // Lectura de coordenadas seleccionadas en el mapa
             val savedStateHandle = backStackEntry.savedStateHandle
             val selectedLat = savedStateHandle.getStateFlow<Double?>("selected_lat", null).collectAsState()
             val selectedLng = savedStateHandle.getStateFlow<Double?>("selected_lng", null).collectAsState()
@@ -158,20 +163,25 @@ fun AppNavigator( // El "GPS" de la aplicacion
                 censoViewModel = viewModel
             )
         }
+        // Pantalla de mapa (Admin visualiza censos, Censista selecciona punto)
         composable(AppRoutes.MAP) {
             val viewModel: MapViewModel = viewModel()
+            val previousRoute = navController.previousBackStackEntry?.destination?.route
+            val isFromCenso = previousRoute?.startsWith("censo") == true
+
             MapScreen(
                 onBackToDashboard = {
                     navController.popBackStack()
                 },
-                onLocationSelected = { lat, lng ->
+                onLocationSelected = if (isFromCenso) { lat, lng ->
                     navController.previousBackStackEntry?.savedStateHandle?.set("selected_lat", lat)
                     navController.previousBackStackEntry?.savedStateHandle?.set("selected_lng", lng)
                     navController.popBackStack()
-                },
+                } else null,
                 mapViewModel = viewModel
             )
         }
+        // Perfil de usuario
         composable(
             route = AppRoutes.PROFILE,
             arguments = listOf(
