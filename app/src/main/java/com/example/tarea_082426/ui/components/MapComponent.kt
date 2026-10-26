@@ -1,25 +1,51 @@
 package com.example.tarea_082426.ui.components
 
-import androidx.compose.foundation.Canvas
+import android.content.Context
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Rect
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Path
-import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalContext
 import com.example.tarea_082426.model.MarkerItem
 import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
+import com.google.maps.android.clustering.view.DefaultClusterRenderer
 import com.google.maps.android.compose.GoogleMap
+import com.google.maps.android.compose.MapEffect
 import com.google.maps.android.compose.MapsComposeExperimentalApi
-import com.google.maps.android.compose.clustering.Clustering
 import com.google.maps.android.compose.rememberCameraPositionState
+
+// Renderer de agrupamiento nativo (Clustering + Colores Rojo/Azul sin crasheos de Compose)
+class CustomClusterRenderer(
+    context: Context,
+    map: GoogleMap,
+    clusterManager: ClusterManager<MarkerItem>
+) : DefaultClusterRenderer<MarkerItem>(context, map, clusterManager) {
+
+    override fun onBeforeClusterItemRendered(item: MarkerItem, markerOptions: MarkerOptions) {
+        val pinHue = if (item.isMasivo) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_RED
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(pinHue))
+        markerOptions.title(item.title)
+        markerOptions.snippet(item.snippet)
+    }
+
+    override fun onClusterItemUpdated(item: MarkerItem, marker: Marker) {
+        val pinHue = if (item.isMasivo) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_RED
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(pinHue))
+        marker.title = item.title
+        marker.snippet = item.snippet
+    }
+}
 
 @OptIn(MapsComposeExperimentalApi::class)
 @Composable
@@ -31,6 +57,7 @@ fun MapComponent(
     onMarkerClick: (MarkerItem) -> Unit = {},
     onMapClick: (LatLng) -> Unit = {}
 ) {
+    val context = LocalContext.current
     val cameraState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(cameraPosition, zoom)
     }
@@ -43,50 +70,32 @@ fun MapComponent(
         )
     }
 
+    var clusterManager by remember { mutableStateOf<ClusterManager<MarkerItem>?>(null) }
+
     GoogleMap(
         modifier = modifier.fillMaxSize(),
         cameraPositionState = cameraState,
         onMapClick = onMapClick
     ) {
-        Clustering(
-            items = markers,
-            onClusterItemClick = { item ->
-                onMarkerClick(item)
-                false
-            },
-            clusterItemContent = { item ->
-                val pinColor = if (item.isMasivo) Color(0xFF1E88E5) else Color(0xFFE53935)
+        MapEffect(markers) { map ->
+            if (clusterManager == null) {
+                val manager = ClusterManager<MarkerItem>(context, map)
+                val renderer = CustomClusterRenderer(context, map, manager)
+                manager.renderer = renderer
 
-                Canvas(
-                    modifier = Modifier.size(28.dp, 40.dp)
-                ) {
-                    val w = size.width
-                    val h = size.height
+                map.setOnCameraIdleListener(manager)
+                map.setOnMarkerClickListener(manager)
 
-                    val pinPath = Path().apply {
-                        moveTo(w / 2f, h)
-                        cubicTo(w * 0.12f, h * 0.58f, 0f, h * 0.40f, 0f, w / 2f)
-                        arcTo(
-                            rect = Rect(0f, 0f, w, w),
-                            startAngleDegrees = 180f,
-                            sweepAngleDegrees = 180f,
-                            forceMoveTo = false
-                        )
-                        cubicTo(w, h * 0.40f, w * 0.88f, h * 0.58f, w / 2f, h)
-                        close()
-                    }
-
-                    // Cuerpo del pin en el color seleccionado (Rojo o Azul)
-                    drawPath(path = pinPath, color = pinColor)
-
-                    // Círculo centro blanco estándar del pin
-                    drawCircle(
-                        color = Color.White,
-                        radius = w * 0.20f,
-                        center = Offset(w / 2f, w / 2f)
-                    )
+                manager.setOnClusterItemClickListener { item ->
+                    onMarkerClick(item)
+                    false
                 }
+                clusterManager = manager
             }
-        )
+
+            clusterManager?.clearItems()
+            clusterManager?.addItems(markers)
+            clusterManager?.cluster()
+        }
     }
 }

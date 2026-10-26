@@ -2,6 +2,9 @@ package com.example.tarea_082426.ui.theme
 
 import androidx.compose.ui.graphics.Color
 
+val GuatemalaBlue = Color(0xFF4997D0) // Azul celeste de la Bandera de Guatemala
+val OnGuatemalaBlue = Color.White
+
 val Purple80 = Color(0xFFD0BCFF)
 val PurpleGrey80 = Color(0xFFCCC2DC)
 val Pink80 = Color(0xFFEFB8C8)

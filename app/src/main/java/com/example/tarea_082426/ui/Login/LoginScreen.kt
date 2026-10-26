@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -161,6 +162,10 @@ fun LoginScreen(
                                 loginViewModel.onLoginClick(context)
                             },
                             enabled = isEmailValid,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF4997D0),
+                                contentColor = Color.White
+                            ),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(stringResource(R.string.login_button))
@@ -174,6 +179,10 @@ fun LoginScreen(
                                 abrirCamaraParaLogin()
                             },
                             enabled = isEmailValid,
+                            colors = ButtonDefaults.buttonColors(
+                                containerColor = Color(0xFF4997D0),
+                                contentColor = Color.White
+                            ),
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(stringResource(R.string.login_face_button))

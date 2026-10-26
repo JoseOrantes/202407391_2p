@@ -1,3 +1,5 @@
+package com.example.tarea_082426.ui
+
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -23,7 +25,7 @@ class MainActivity : ComponentActivity() {
             Amplify.addPlugin(AWSCognitoAuthPlugin())
             Amplify.configure(applicationContext)
             Log.i("Amplify", "Amplify configurado exitosamente")
-        } catch (error: AmplifyException) {
+        } catch (error: Throwable) {
             Log.e("Amplify", "Error al configurar Amplify", error)
         }
         setContent {

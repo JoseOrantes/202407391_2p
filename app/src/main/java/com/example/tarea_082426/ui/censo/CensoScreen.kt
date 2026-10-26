@@ -1,5 +1,10 @@
 package com.example.tarea_082426.ui.censo
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,13 +18,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
@@ -27,24 +30,19 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.google.android.gms.maps.model.CameraPosition
-import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.GoogleMap
-import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.MarkerState
-import com.google.maps.android.compose.rememberCameraPositionState
-
-import androidx.compose.ui.res.stringResource
 import com.example.tarea_082426.R
+import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.Priority
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -56,10 +54,64 @@ fun CensoScreen(
     censoViewModel: CensoViewModel = viewModel()
 ) {
     val state by censoViewModel.state.collectAsState()
+    val context = LocalContext.current
 
-    var expandedPais by remember { mutableStateOf(false) }
-    var expandedDept by remember { mutableStateOf(false) }
-    var expandedMuni by remember { mutableStateOf(false) }
+    // Obtiene la ubicación GPS actual activa del dispositivo
+    fun obtenerUbicacion() {
+        try {
+            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(context)
+            fusedLocationClient.getCurrentLocation(
+                Priority.PRIORITY_HIGH_ACCURACY,
+                null
+            ).addOnSuccessListener { currLoc ->
+                if (currLoc != null) {
+                    censoViewModel.onUbicacionSeleccionada(currLoc.latitude, currLoc.longitude)
+                    Toast.makeText(context, "GPS: ${currLoc.latitude}, ${currLoc.longitude}", Toast.LENGTH_SHORT).show()
+                } else {
+                    fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
+                        if (loc != null) {
+                            censoViewModel.onUbicacionSeleccionada(loc.latitude, loc.longitude)
+                            Toast.makeText(context, "GPS: ${loc.latitude}, ${loc.longitude}", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, context.getString(R.string.census_gps_warning), Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            }.addOnFailureListener {
+                Toast.makeText(context, "Error al consultar ubicación GPS", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: SecurityException) {
+            Toast.makeText(context, "Permiso de ubicación no concedido", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Launcher para solicitar permiso de ubicación
+    val locationPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission()
+    ) { concedido ->
+        if (concedido) {
+            obtenerUbicacion()
+        } else {
+            Toast.makeText(context, "Permiso de ubicación denegado", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    // Valida permisos de GPS antes de consultar ubicación
+    fun obtenerUbicacionActual() {
+        val fineGranted = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        val coarseGranted = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.ACCESS_COARSE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (fineGranted || coarseGranted) {
+            obtenerUbicacion()
+        } else {
+            locationPermissionLauncher.launch(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
+    }
 
     Box(modifier = modifier.fillMaxSize()) {
         Column(
@@ -129,6 +181,18 @@ fun CensoScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
+                    // Botón para usar la ubicación GPS del dispositivo
+                    Button(
+                        onClick = {
+                            obtenerUbicacionActual()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(R.string.census_use_current_location))
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     // Botón para abrir el mapa
                     Button(
                         onClick = onMapClick,
@@ -137,128 +201,25 @@ fun CensoScreen(
                         Text(stringResource(R.string.map_select_location))
                     }
 
-                    /*
-                    // 1. Dropdown País
-                    ExposedDropdownMenuBox(
-                        expanded = expandedPais,
-                        onExpandedChange = { expandedPais = !expandedPais },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        OutlinedTextField(
-                            value = state.paisSeleccionado?.nombre ?: stringResource(R.string.census_select_country),
-                            onValueChange = {},
-                            readOnly = true,
-                            label = { Text(stringResource(R.string.census_country)) },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedPais) },
-                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth()
-                        )
-
-                        ExposedDropdownMenu(
-                            expanded = expandedPais,
-                            onDismissRequest = { expandedPais = false }
-                        ) {
-                            state.paisesDisponibles.forEach { pais ->
-                                DropdownMenuItem(
-                                    text = { Text(pais.nombre) },
-                                    onClick = {
-                                        censoViewModel.onPaisSelected(pais)
-                                        expandedPais = false
-                                    },
-                                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                                )
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // 2. Dropdown Departamento (Deshabilitado hasta que se elija País)
-                    val paisElegido = state.paisSeleccionado != null
-                    ExposedDropdownMenuBox(
-                        expanded = expandedDept && paisElegido,
-                        onExpandedChange = { if (paisElegido) expandedDept = !expandedDept },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        OutlinedTextField(
-                            value = state.departamentoSeleccionado?.nombre ?: if (paisElegido) stringResource(R.string.census_select_department) else stringResource(R.string.census_select_country_first),
-                            onValueChange = {},
-                            readOnly = true,
-                            enabled = paisElegido,
-                            label = { Text(stringResource(R.string.census_department)) },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedDept && paisElegido) },
-                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth()
-                        )
-
-                        if (paisElegido) {
-                            ExposedDropdownMenu(
-                                expanded = expandedDept,
-                                onDismissRequest = { expandedDept = false }
-                            ) {
-                                state.departamentosDisponibles.forEach { dept ->
-                                    DropdownMenuItem(
-                                        text = { Text(dept.nombre) },
-                                        onClick = {
-                                            censoViewModel.onDepartamentoSelected(dept)
-                                            expandedDept = false
-                                        },
-                                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    // 3. Dropdown Municipio (Deshabilitado hasta que se elija Departamento)
-                    val deptElegido = state.departamentoSeleccionado != null
-                    ExposedDropdownMenuBox(
-                        expanded = expandedMuni && deptElegido,
-                        onExpandedChange = { if (deptElegido) expandedMuni = !expandedMuni },
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        OutlinedTextField(
-                            value = state.municipioSeleccionado?.nombre ?: if (deptElegido) stringResource(R.string.census_select_municipality) else stringResource(R.string.census_select_department_first),
-                            onValueChange = {},
-                            readOnly = true,
-                            enabled = deptElegido,
-                            label = { Text(stringResource(R.string.census_municipality)) },
-                            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expandedMuni && deptElegido) },
-                            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                            modifier = Modifier
-                                .menuAnchor()
-                                .fillMaxWidth()
-                        )
-
-                        if (deptElegido) {
-                            ExposedDropdownMenu(
-                                expanded = expandedMuni,
-                                onDismissRequest = { expandedMuni = false }
-                            ) {
-                                state.municipiosDisponibles.forEach { muni ->
-                                    DropdownMenuItem(
-                                        text = { Text(muni.nombre) },
-                                        onClick = {
-                                            censoViewModel.onMunicipioSelected(muni)
-                                            expandedMuni = false
-                                        },
-                                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
-                                    )
-                                }
-                            }
-                        }
-                    }
-                    */
                     Spacer(modifier = Modifier.height(24.dp))
+
+                    // Validación de campos completos y ubicación para habilitar guardado
+                    val isFormValid = state.nombre.trim().isNotEmpty() &&
+                            state.apellido.trim().isNotEmpty() &&
+                            state.totalMiembros.trim().isNotEmpty() &&
+                            state.cantidadTVs.trim().isNotEmpty() &&
+                            state.latitud != null &&
+                            state.longitud != null &&
+                            !state.isLoading
 
                     Button(
                         onClick = { censoViewModel.guardarCenso(userId) },
-                        modifier = Modifier.fillMaxWidth(),
-                        enabled = !state.isLoading
+                        enabled = isFormValid,
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFF4997D0),
+                            contentColor = Color.White
+                        ),
+                        modifier = Modifier.fillMaxWidth()
                     ) {
                         Text(stringResource(R.string.census_save_button))
                     }

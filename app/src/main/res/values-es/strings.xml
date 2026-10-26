@@ -63,6 +63,8 @@
     <string name="census_select_municipality">Seleccionar Municipio</string>
     <string name="census_select_department_first">Primero seleccione Departamento</string>
     <string name="census_save_button">Guardar Censo</string>
+    <string name="census_use_current_location">Usar Ubicación Actual</string>
+    <string name="census_gps_warning">Por favor active la ubicación GPS de su dispositivo.</string>
     <string name="census_back_dashboard">Volver al Dashboard</string>
 
     <!-- Map -->
