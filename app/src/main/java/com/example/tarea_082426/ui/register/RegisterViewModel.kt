@@ -20,6 +20,7 @@ class RegisterViewModel : ViewModel() {
         cargarRoles()
     }
 
+    // Carga de roles desde API
     private fun cargarRoles() {
         viewModelScope.launch {
             val result = repository.getRoles()
@@ -43,6 +44,7 @@ class RegisterViewModel : ViewModel() {
     fun onGeneroChange(valor: String) { _state.value = _state.value.copy(genero = valor) }
     fun onRolChange(role: Role) { _state.value = _state.value.copy(rolSeleccionado = role) }
 
+    // Registro de usuario en servidor
     fun onRegisterClick() {
         viewModelScope.launch {
             //Si no coinciden no envia peticion a servidor

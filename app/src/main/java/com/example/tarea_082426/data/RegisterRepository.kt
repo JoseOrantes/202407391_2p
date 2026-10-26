@@ -8,6 +8,7 @@ import com.example.tarea_082426.model.response.Register.RegisterResponse
 class RegisterRepository {
     private val apiRegister = RetrofitClient.apiRegister
 
+    // Registro de usuario en servidor
     suspend fun register(request: RegisterRequest): Result<RegisterResponse> {
         return try {
             val response = apiRegister.register(request)
@@ -21,6 +22,7 @@ class RegisterRepository {
         }
     }
 
+    // Consulta de roles desde API
     suspend fun getRoles(): Result<List<Role>> {
         return try {
             val response = apiRegister.getRoles()

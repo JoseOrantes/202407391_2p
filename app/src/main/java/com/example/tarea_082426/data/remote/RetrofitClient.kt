@@ -41,4 +41,9 @@ object RetrofitClient {
     val apiMap: ApiMap by lazy {
         retrofit.create(ApiMap::class.java)
     }
+
+    // Cliente API para AWS Liveness y Lambdas
+    val apiLiveness: ApiLiveness by lazy {
+        retrofit.create(ApiLiveness::class.java)
+    }
 }

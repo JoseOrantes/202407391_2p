@@ -6,6 +6,7 @@
     <string name="login_email">Correo</string>
     <string name="login_password">Contraseña</string>
     <string name="login_button">Ingresar</string>
+    <string name="login_face_button">Iniciar Sesión con Foto</string>
 
     <!-- Dashboard -->
     <string name="dashboard_welcome">¡Bienvenido %1$s!</string>

@@ -105,6 +105,7 @@ class ProfileViewModel : ViewModel() {
         }
     }
 
+    // Compresión de imagen a bytes
     fun obtenerFotoEnBytes(): ByteArray? {
         val bitmap = _state.value.fotoPerfil ?: return null
         val stream = ByteArrayOutputStream()
@@ -112,6 +113,7 @@ class ProfileViewModel : ViewModel() {
         return stream.toByteArray()
     }
 
+    // Decodificación de bytes a imagen
     fun cargarFotoDesdeBytes(bytes: ByteArray?) {
         val bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes?.size ?: 0)
         _state.value = _state.value.copy(fotoPerfil = bitmap)
