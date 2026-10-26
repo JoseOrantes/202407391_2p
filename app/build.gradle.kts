@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.play.services.maps)
     implementation(libs.maps.compose)
+    implementation(libs.maps.compose.utils)
 
     // AWS Amplify Face Liveness
     implementation(libs.amplify.ui.liveness)

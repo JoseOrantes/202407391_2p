@@ -54,6 +54,7 @@ room-compiler = { group = "androidx.room3", name = "room3-compiler", version.ref
 play-services-location = { group = "com.google.android.gms", name = "play-services-location", version.ref = "playServicesLocation" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 maps-compose = { group = "com.google.maps.android", name = "maps-compose", version.ref = "mapsCompose" }
+maps-compose-utils = { group = "com.google.maps.android", name = "maps-compose-utils", version.ref = "mapsCompose" }
 amplify-ui-liveness = { group = "com.amplifyframework.ui", name = "liveness", version.ref = "amplifyUi" }
 amplify-aws-auth-cognito = { group = "com.amplifyframework", name = "aws-auth-cognito", version.ref = "amplify" }
 kotlinx-coroutines-android = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-android", version.ref = "coroutines" }

@@ -41,14 +41,23 @@ class MapRepository {
                             ?: item["nombre_municipio"]?.toString() 
                             ?: item["municipio"]?.toString() ?: ""
 
+                        val estadoNombre = item["estado_nombre"]?.toString() ?: item["estado"]?.toString() ?: ""
+                        val isMasivo = estadoNombre.isNotEmpty() && !estadoNombre.equals("null", ignoreCase = true)
+
                         val title = if (muniNombre.isNotEmpty()) "$nombre $apellido ($muniNombre)" else "$nombre $apellido"
-                        val snippet = "Miembros: $miembros, TVs: $tvs"
+                        val baseSnippet = "Miembros: $miembros, TVs: $tvs"
+                        val snippet = if (isMasivo) {
+                            "$baseSnippet | Origen: $estadoNombre"
+                        } else {
+                            baseSnippet
+                        }
 
                         markers.add(
                             MarkerItem(
                                 position = LatLng(lat, lng),
                                 title = title,
-                                snippet = snippet
+                                snippet = snippet,
+                                isMasivo = isMasivo
                             )
                         )
                     }

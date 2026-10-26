@@ -1,12 +1,20 @@
 package com.example.tarea_082426.model
 
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.clustering.ClusterItem
+
 
 data class MarkerItem(
-    val position: LatLng,
-    val title: String = "",
-    val snippet: String = ""
-)
+    @get:JvmName("getMarkerPosition") val position: LatLng,
+    @get:JvmName("getMarkerTitle") val title: String = "",
+    @get:JvmName("getMarkerSnippet") val snippet: String = "",
+    val isMasivo: Boolean = false
+) : ClusterItem {
+    override fun getPosition(): LatLng = position
+    override fun getTitle(): String = title
+    override fun getSnippet(): String = snippet
+    override fun getZIndex(): Float? = null
+}
 
 data class MapState(
     val markers: List<MarkerItem> = emptyList(),
