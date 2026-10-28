@@ -17,29 +17,14 @@ import com.example.tarea_082426.ui.Login.LoginViewModel
 import com.example.tarea_082426.ui.censo.CensoScreen
 import com.example.tarea_082426.ui.censo.CensoViewModel
 import com.example.tarea_082426.ui.dashboard.DashboardScreen
-import com.example.tarea_082426.ui.dashboard.DashboardViewModel
 import com.example.tarea_082426.ui.map.MapScreen
 import com.example.tarea_082426.ui.map.MapViewModel
-import com.example.tarea_082426.ui.profile.ProfileScreen
-import com.example.tarea_082426.ui.register.RegisterScreen
-import com.example.tarea_082426.ui.register.RegisterViewModel
 
-object AppRoutes { // Define las rutas (URLs internas) de la app
+object AppRoutes { // Define las rutas de la app
     const val LOGIN = "login"
-    const val PROFILE = "profile/{id}/{token}/{nombre}/{apellido}/{usuario}"
-    const val REGISTER = "register"
     const val DASHBOARD = "dashboard/{id}/{nombre}/{usuario}/{idRol}/{rol}"
     const val MAP = "map"
     const val CENSO = "censo/{userId}"
-
-    // Genera la ruta dinamica para perfil con sus argumentos
-    fun profileRoute(id: Int, token: String, nombre: String, apellido: String, usuario: String): String {
-        val encToken = Uri.encode(token)
-        val encNombre = Uri.encode(nombre)
-        val encApellido = Uri.encode(apellido)
-        val encUsuario = Uri.encode(usuario)
-        return "profile/$id/$encToken/$encNombre/$encApellido/$encUsuario"
-    }
 
     fun censoRoute(userId: Int): String {
         return "censo/$userId"
@@ -54,7 +39,7 @@ object AppRoutes { // Define las rutas (URLs internas) de la app
 }
 
 @Composable
-fun AppNavigator( // El "GPS" de la aplicacion
+fun AppNavigator(
     navController: NavHostController = rememberNavController(),
     modifier: Modifier = Modifier
 ) {
@@ -74,19 +59,6 @@ fun AppNavigator( // El "GPS" de la aplicacion
                     }
                 },
                 modifier = Modifier
-            )
-        }
-        // Registro de usuario
-        composable(AppRoutes.REGISTER) {
-            val viewModel: RegisterViewModel = viewModel()
-            RegisterScreen(
-                onRegisterSuccess = {
-                    navController.popBackStack()
-                },
-                onBackToLogin = {
-                    navController.popBackStack()
-                },
-                registerViewModel = viewModel
             )
         }
         // Menú principal adaptativo por rol
@@ -112,14 +84,8 @@ fun AppNavigator( // El "GPS" de la aplicacion
                 usuario = usuario,
                 idRol = idRol,
                 rol = rol,
-                onProfileClick = {
-                    navController.navigate(AppRoutes.profileRoute(id, "", nombre, "", usuario))
-                },
                 onCensoClick = {
                     navController.navigate(AppRoutes.censoRoute(id))
-                },
-                onRegisterClick = {
-                    navController.navigate(AppRoutes.REGISTER)
                 },
                 onMapClick = {
                     navController.navigate(AppRoutes.MAP)
@@ -179,32 +145,6 @@ fun AppNavigator( // El "GPS" de la aplicacion
                     navController.popBackStack()
                 } else null,
                 mapViewModel = viewModel
-            )
-        }
-        // Perfil de usuario
-        composable(
-            route = AppRoutes.PROFILE,
-            arguments = listOf(
-                navArgument("id") { type = NavType.IntType },
-                navArgument("token") { type = NavType.StringType },
-                navArgument("nombre") { type = NavType.StringType },
-                navArgument("apellido") { type = NavType.StringType },
-                navArgument("usuario") { type = NavType.StringType }
-            )
-        ) { backStackEntry ->
-            val id = backStackEntry.arguments?.getInt("id") ?: 0
-            val nombre = backStackEntry.arguments?.getString("nombre") ?: ""
-            val apellido = backStackEntry.arguments?.getString("apellido") ?: ""
-            val usuario = backStackEntry.arguments?.getString("usuario") ?: ""
-
-            ProfileScreen(
-                id = id,
-                nombre = nombre,
-                apellido = apellido,
-                usuario = usuario,
-                onBackToDashboardClick = {
-                    navController.popBackStack()
-                }
             )
         }
     }

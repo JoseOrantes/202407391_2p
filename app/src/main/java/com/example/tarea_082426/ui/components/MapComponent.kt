@@ -25,7 +25,7 @@ import com.google.maps.android.compose.MapEffect
 import com.google.maps.android.compose.MapsComposeExperimentalApi
 import com.google.maps.android.compose.rememberCameraPositionState
 
-// Renderer de agrupamiento nativo (Clustering + Colores Rojo/Azul sin crasheos de Compose)
+// Renderer de agrupamiento nativo (Todos los marcadores en color rojo estándar)
 class CustomClusterRenderer(
     context: Context,
     map: GoogleMap,
@@ -33,15 +33,14 @@ class CustomClusterRenderer(
 ) : DefaultClusterRenderer<MarkerItem>(context, map, clusterManager) {
 
     override fun onBeforeClusterItemRendered(item: MarkerItem, markerOptions: MarkerOptions) {
-        val pinHue = if (item.isMasivo) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_RED
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(pinHue))
+        // Todos los marcadores rojos según el estándar
+        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         markerOptions.title(item.title)
         markerOptions.snippet(item.snippet)
     }
 
     override fun onClusterItemUpdated(item: MarkerItem, marker: Marker) {
-        val pinHue = if (item.isMasivo) BitmapDescriptorFactory.HUE_AZURE else BitmapDescriptorFactory.HUE_RED
-        marker.setIcon(BitmapDescriptorFactory.defaultMarker(pinHue))
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
         marker.title = item.title
         marker.snippet = item.snippet
     }

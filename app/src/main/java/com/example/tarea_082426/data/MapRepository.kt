@@ -45,12 +45,7 @@ class MapRepository {
                         val isMasivo = estadoNombre.isNotEmpty() && !estadoNombre.equals("null", ignoreCase = true)
 
                         val title = if (muniNombre.isNotEmpty()) "$nombre $apellido ($muniNombre)" else "$nombre $apellido"
-                        val baseSnippet = "Miembros: $miembros, TVs: $tvs"
-                        val snippet = if (isMasivo) {
-                            "$baseSnippet | Origen: $estadoNombre"
-                        } else {
-                            baseSnippet
-                        }
+                        val snippet = "Miembros: $miembros, TVs: $tvs"
 
                         markers.add(
                             MarkerItem(

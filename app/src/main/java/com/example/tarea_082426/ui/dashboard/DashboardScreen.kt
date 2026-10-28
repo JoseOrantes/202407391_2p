@@ -20,11 +20,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-
-import androidx.compose.ui.res.stringResource
 import com.example.tarea_082426.R
 
 @Composable
@@ -34,15 +33,12 @@ fun DashboardScreen(
     usuario: String,
     idRol: Int,
     rol: String,
-    onProfileClick: () -> Unit = {},
     onCensoClick: () -> Unit = {},
-    onRegisterClick: () -> Unit = {},
     onMapClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     modifier: Modifier = Modifier,
     dashboardViewModel: DashboardViewModel = viewModel()
 ) {
-    // Es Admin si idRol es 1 o el string es "ADMIN"
     val esAdmin = idRol == 1 || rol.equals("ADMIN", ignoreCase = true)
 
     Column(
@@ -58,15 +54,6 @@ fun DashboardScreen(
             text = stringResource(R.string.dashboard_welcome, usuario),
             style = MaterialTheme.typography.headlineMedium,
             fontWeight = FontWeight.Bold
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        val rolNombre = if (esAdmin) "ADMIN" else if (rol.isNotEmpty()) rol else "CENSISTA"
-        Text(
-            text = stringResource(R.string.dashboard_role, rolNombre),
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.secondary
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -89,41 +76,24 @@ fun DashboardScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Opcion comun: Ver Perfil
-                Button(
-                    onClick = onProfileClick,
-                    modifier = Modifier.width(280.dp)
-                ) {
-                    Text(stringResource(R.string.dashboard_view_profile))
-                }
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                // Opciones exclusivas para ADMIN (idRol == 1)
-                if (esAdmin) {
-                    Button(
-                        onClick = onMapClick,
-                        modifier = Modifier.width(280.dp)
-                    ) {
-                        Text(stringResource(R.string.dashboard_map))
-                    }
-
-                    Spacer(modifier = Modifier.height(12.dp))
-
-                    Button(
-                        onClick = onRegisterClick,
-                        modifier = Modifier.width(280.dp)
-                    ) {
-                        Text(stringResource(R.string.dashboard_register_user))
-                    }
-                } else {
-                    // Opción exclusiva para CENSISTA / USER (idRol == 2)
+                // Opción para CENSISTA / USER: Tomar Censo
+                if (!esAdmin) {
                     Button(
                         onClick = onCensoClick,
                         modifier = Modifier.width(280.dp)
                     ) {
                         Text(stringResource(R.string.dashboard_take_census))
                     }
+
+                    Spacer(modifier = Modifier.height(12.dp))
+                }
+
+                // Opción disponible para TODOS los roles (USER y ADMIN): Mapa
+                Button(
+                    onClick = onMapClick,
+                    modifier = Modifier.width(280.dp)
+                ) {
+                    Text(stringResource(R.string.dashboard_map))
                 }
             }
         }

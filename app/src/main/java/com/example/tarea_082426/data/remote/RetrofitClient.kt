@@ -26,24 +26,11 @@ object RetrofitClient {
         retrofit.create(ApiLogin::class.java)
     }
 
-    val apiProfile: ApiProfile by lazy {
-        retrofit.create(ApiProfile::class.java)
-    }
-
-    val apiRegister: ApiRegister by lazy {
-        retrofit.create(ApiRegister::class.java)
-    }
-
     val apiCenso: ApiCenso by lazy {
         retrofit.create(ApiCenso::class.java)
     }
 
     val apiMap: ApiMap by lazy {
         retrofit.create(ApiMap::class.java)
-    }
-
-    // Cliente API para AWS Liveness y Lambdas
-    val apiLiveness: ApiLiveness by lazy {
-        retrofit.create(ApiLiveness::class.java)
     }
 }

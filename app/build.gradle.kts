@@ -64,27 +64,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // Room 3
-    implementation(libs.room.runtime)
-    ksp(libs.room.compiler)
-
     // Maps & Location
     implementation(libs.play.services.location)
     implementation(libs.play.services.maps)
     implementation(libs.maps.compose)
     implementation(libs.maps.compose.utils)
 
-    // AWS Amplify Face Liveness
-    implementation(libs.amplify.ui.liveness)
-    implementation(libs.amplify.aws.auth.cognito)
     implementation(libs.kotlinx.coroutines.android)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
-
-    implementation("org.tensorflow:tensorflow-lite:2.14.0")
-    implementation("org.tensorflow:tensorflow-lite-support:0.4.4")
-}
-
-configurations.all {
-    exclude(group = "org.tensorflow", module = "tensorflow-lite-api")
-    exclude(group = "org.tensorflow", module = "tensorflow-lite-support-api")
 }

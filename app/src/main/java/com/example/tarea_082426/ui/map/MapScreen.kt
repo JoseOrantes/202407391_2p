@@ -121,8 +121,7 @@ fun MapScreen(
                     Text(stringResource(R.string.map_confirm_location, selectedLocation!!.latitude, selectedLocation!!.longitude))
                 }
             }
-            /*
-            // Diálogo con detalles del censo para Administrador
+            // Diálogo de Material 3 con detalles de la ubicación seleccionada al tocar un marcador
             if (clickedMarker != null) {
                 AlertDialog(
                     onDismissRequest = { clickedMarker = null },
@@ -140,7 +139,7 @@ fun MapScreen(
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Lat: ${clickedMarker!!.position.latitude}, Lng: ${clickedMarker!!.position.longitude}",
+                                text = "Lat: ${String.format("%.4f", clickedMarker!!.position.latitude)}, Lng: ${String.format("%.4f", clickedMarker!!.position.longitude)}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.secondary
                             )
@@ -152,7 +151,7 @@ fun MapScreen(
                         }
                     }
                 )
-            }*/
+            }
         }
     }
 }
