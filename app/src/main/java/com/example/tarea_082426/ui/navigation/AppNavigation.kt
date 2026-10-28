@@ -15,6 +15,8 @@ import androidx.navigation.navArgument
 import com.example.tarea_082426.ui.Login.LoginScreen
 import com.example.tarea_082426.ui.Login.LoginViewModel
 import com.example.tarea_082426.ui.dashboard.DashboardScreen
+import com.example.tarea_082426.ui.location.LocationListScreen
+import com.example.tarea_082426.ui.location.LocationListViewModel
 import com.example.tarea_082426.ui.location.LocationScreen
 import com.example.tarea_082426.ui.location.LocationViewModel
 import com.example.tarea_082426.ui.map.MapScreen
@@ -23,11 +25,20 @@ import com.example.tarea_082426.ui.map.MapViewModel
 object AppRoutes {
     const val LOGIN = "login"
     const val DASHBOARD = "dashboard/{id}/{nombre}/{usuario}/{idRol}/{rol}"
-    const val MAP = "map"
+    const val MAP = "map/{userId}"
     const val LOCATION = "location/{userId}"
+    const val LOCATION_LIST = "location_list/{userId}"
 
     fun locationRoute(userId: Int): String {
         return "location/$userId"
+    }
+
+    fun locationListRoute(userId: Int): String {
+        return "location_list/$userId"
+    }
+
+    fun mapRoute(userId: Int): String {
+        return "map/$userId"
     }
 
     fun dashboardRoute(id: Int, nombre: String, usuario: String, idRol: Int, rol: String): String {
@@ -87,8 +98,11 @@ fun AppNavigator(
                 onCensoClick = {
                     navController.navigate(AppRoutes.locationRoute(id))
                 },
+                onListClick = {
+                    navController.navigate(AppRoutes.locationListRoute(id))
+                },
                 onMapClick = {
-                    navController.navigate(AppRoutes.MAP)
+                    navController.navigate(AppRoutes.mapRoute(id))
                 },
                 onLogoutClick = {
                     navController.navigate(AppRoutes.LOGIN) {
@@ -123,18 +137,39 @@ fun AppNavigator(
                     navController.popBackStack()
                 },
                 onMapClick = {
-                    navController.navigate(AppRoutes.MAP)
+                    navController.navigate(AppRoutes.mapRoute(userId))
                 },
                 locationViewModel = viewModel
             )
         }
+        // Pantalla de listado de ubicaciones guardadas
+        composable(
+            route = AppRoutes.LOCATION_LIST,
+            arguments = listOf(navArgument("userId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getInt("userId") ?: 0
+            val viewModel: LocationListViewModel = viewModel()
+
+            LocationListScreen(
+                userId = userId,
+                onBackToDashboard = {
+                    navController.popBackStack()
+                },
+                viewModel = viewModel
+            )
+        }
         // Pantalla de mapa
-        composable(AppRoutes.MAP) {
+        composable(
+            route = AppRoutes.MAP,
+            arguments = listOf(navArgument("userId") { type = NavType.IntType })
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments?.getInt("userId") ?: 0
             val viewModel: MapViewModel = viewModel()
             val previousRoute = navController.previousBackStackEntry?.destination?.route
             val isFromLocation = previousRoute?.startsWith("location") == true
 
             MapScreen(
+                userId = userId,
                 onBackToDashboard = {
                     navController.popBackStack()
                 },

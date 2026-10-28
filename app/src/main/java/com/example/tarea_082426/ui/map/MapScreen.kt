@@ -24,17 +24,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.tarea_082426.R
 import com.example.tarea_082426.model.MarkerItem
 import com.example.tarea_082426.ui.components.MapComponent
 import com.google.android.gms.maps.model.LatLng
 
-import androidx.compose.ui.res.stringResource
-import com.example.tarea_082426.R
-
 @Composable
 fun MapScreen(
+    userId: Int = 0,
     modifier: Modifier = Modifier,
     onBackToDashboard: () -> Unit = {},
     onLocationSelected: ((Double, Double) -> Unit)? = null,
@@ -44,15 +44,15 @@ fun MapScreen(
     val state by mapViewModel.state.collectAsState()
     var selectedLocation by remember { mutableStateOf<LatLng?>(null) }
 
-    // Variable para recordad marcador seleccionado
+    // Variable para recordar marcador seleccionado
     var clickedMarker by remember { mutableStateOf<MarkerItem?>(null) }
 
     val isSelectingLocation = onLocationSelected != null
 
-    // Carga de censos desde API únicamente para Administrador
-    LaunchedEffect(isSelectingLocation) {
+    // Carga de ubicaciones filtradas para el usuario autenticado
+    LaunchedEffect(isSelectingLocation, userId) {
         if (!isSelectingLocation) {
-            mapViewModel.cargarCensosDesdeAPI()
+            mapViewModel.cargarCensosDesdeAPI(userId)
         } else {
             mapViewModel.limpiarMarcadores()
         }
@@ -82,10 +82,8 @@ fun MapScreen(
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            // Modo selección únicamente para Censista
             val isSelectingLocation = onLocationSelected != null
 
-            // Lista de marcadores más selección activa
             val allMarkers = if (isSelectingLocation && selectedLocation != null) {
                 state.markers + MarkerItem(selectedLocation!!, "Selected Location", "")
             } else {
@@ -108,7 +106,6 @@ fun MapScreen(
                 }
             )
 
-            // Botón de confirmación de coordenadas para Censista
             if (onLocationSelected != null && selectedLocation != null) {
                 Button(
                     onClick = {
@@ -121,7 +118,7 @@ fun MapScreen(
                     Text(stringResource(R.string.map_confirm_location, selectedLocation!!.latitude, selectedLocation!!.longitude))
                 }
             }
-            // Diálogo de Material 3 con detalles de la ubicación seleccionada al tocar un marcador
+
             if (clickedMarker != null) {
                 AlertDialog(
                     onDismissRequest = { clickedMarker = null },

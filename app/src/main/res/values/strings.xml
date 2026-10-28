@@ -12,6 +12,7 @@
     <string name="dashboard_main_menu">Main Menu</string>
     <string name="dashboard_map">Map</string>
     <string name="dashboard_take_census">Take Location</string>
+    <string name="dashboard_view_locations">View Locations</string>
     <string name="dashboard_logout">Log Out</string>
 
     <!-- Location -->
@@ -22,6 +23,11 @@
     <string name="census_use_current_location">Use Current Location</string>
     <string name="census_gps_warning">Please turn on your device GPS location.</string>
     <string name="census_back_dashboard">Back to Dashboard</string>
+
+    <!-- Location List -->
+    <string name="location_list_title">Saved Locations</string>
+    <string name="location_list_empty">No locations saved yet.</string>
+    <string name="location_list_coords">Lat: %1$.4f, Lng: %2$.4f</string>
 
     <!-- Map -->
     <string name="map_title">Map - %1$d locations</string>

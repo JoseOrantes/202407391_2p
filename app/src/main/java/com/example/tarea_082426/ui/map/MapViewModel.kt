@@ -16,9 +16,9 @@ class MapViewModel : ViewModel() {
     private val _state = MutableStateFlow(MapState())
     val state: StateFlow<MapState> = _state
 
-    fun cargarCensosDesdeAPI() {
+    fun cargarCensosDesdeAPI(userId: Int = 0) {
         viewModelScope.launch {
-            val result = repository.getCensosMarkers()
+            val result = repository.getCensosMarkers(userId)
             result.onSuccess { list ->
                 cargarMarcadores(list)
             }

@@ -34,6 +34,7 @@ fun DashboardScreen(
     idRol: Int,
     rol: String,
     onCensoClick: () -> Unit = {},
+    onListClick: () -> Unit = {},
     onMapClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     modifier: Modifier = Modifier,
@@ -76,7 +77,7 @@ fun DashboardScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Opción para CENSISTA / USER: Tomar Censo
+                // Opción para CENSISTA / USER: Tomar Ubicación
                 if (!esAdmin) {
                     Button(
                         onClick = onCensoClick,
@@ -88,7 +89,17 @@ fun DashboardScreen(
                     Spacer(modifier = Modifier.height(12.dp))
                 }
 
-                // Opción disponible para TODOS los roles (USER y ADMIN): Mapa
+                // Opción para TODOS los usuarios: Listado de Ubicaciones en Cards
+                Button(
+                    onClick = onListClick,
+                    modifier = Modifier.width(280.dp)
+                ) {
+                    Text(stringResource(R.string.dashboard_view_locations))
+                }
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                // Opción disponible para TODOS los roles: Mapa
                 Button(
                     onClick = onMapClick,
                     modifier = Modifier.width(280.dp)
