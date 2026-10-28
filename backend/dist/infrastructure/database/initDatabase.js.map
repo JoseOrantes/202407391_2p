@@ -1,0 +1,1 @@
+{"version":3,"file":"initDatabase.js","sourceRoot":"","sources":["../../../src/infrastructure/database/initDatabase.ts"],"names":[],"mappings":";;;AAAA,2CAAwC;AAEjC,KAAK;IACV,MAAM,qBAAS,CAAC,YAAY,EAAE,CAAC;IAC/B,MAAM,qBAAS,CAAC,IAAI,EAAE,CAAC;IACvB,OAAO,CAAC,GAAG,CAAC,gCAAgC,CAAC,CAAC;AAChD,CAAC;kBAEc,YAAY"}
