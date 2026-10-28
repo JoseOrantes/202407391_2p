@@ -7,7 +7,7 @@ import com.google.android.gms.maps.model.LatLng
 class MapRepository {
     private val apiMap = RetrofitClient.apiMap
 
-    // Petición GET para obtener censos
+    // Petición GET para obtener ubicaciones
     suspend fun getCensosMarkers(): Result<List<MarkerItem>> {
         return try {
             val response = apiMap.getCensos()
@@ -15,20 +15,17 @@ class MapRepository {
                 val rawBody = response.body()!!
                 val markers = mutableListOf<MarkerItem>()
 
-                // Extrae lista de censos desde respuesta JSON
+                // Extrae lista de ubicaciones desde respuesta JSON
                 val rawList = (rawBody as? List<*>)
                     ?: ((rawBody as? Map<*, *>)?.get("body") as? List<*>)
                     ?: ((rawBody as? Map<*, *>)?.get("censos") as? List<*>)
 
-                // Mapeo de cada censo a marcador
+                // Mapeo de cada ubicación a marcador
                 rawList?.forEach { item ->
                     if (item is Map<*, *>) {
                         val nombre = item["nombre"]?.toString() ?: ""
-                        val apellido = item["apellido"]?.toString() ?: ""
-                        val miembros = (item["total_miembros"] as? Double)?.toInt() 
-                            ?: (item["total_miembros"] as? Int) ?: 1
-                        val tvs = (item["cantidad_televisiones"] as? Double)?.toInt() 
-                            ?: (item["cantidad_televisiones"] as? Int) ?: 0
+                        val descripcion = item["descripcion"]?.toString() 
+                            ?: item["apellido"]?.toString() ?: ""
 
                         val lat = item["latitud"]?.toString()?.toDoubleOrNull() 
                             ?: item["lat"]?.toString()?.toDoubleOrNull() 
@@ -37,15 +34,11 @@ class MapRepository {
                             ?: item["lng"]?.toString()?.toDoubleOrNull() 
                             ?: -90.5069
 
-                        val muniNombre = item["municipio_nombre"]?.toString() 
-                            ?: item["nombre_municipio"]?.toString() 
-                            ?: item["municipio"]?.toString() ?: ""
-
                         val estadoNombre = item["estado_nombre"]?.toString() ?: item["estado"]?.toString() ?: ""
                         val isMasivo = estadoNombre.isNotEmpty() && !estadoNombre.equals("null", ignoreCase = true)
 
-                        val title = if (muniNombre.isNotEmpty()) "$nombre $apellido ($muniNombre)" else "$nombre $apellido"
-                        val snippet = "Miembros: $miembros, TVs: $tvs"
+                        val title = nombre
+                        val snippet = descripcion
 
                         markers.add(
                             MarkerItem(

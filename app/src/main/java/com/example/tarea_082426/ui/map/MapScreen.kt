@@ -127,19 +127,19 @@ fun MapScreen(
                     onDismissRequest = { clickedMarker = null },
                     title = {
                         Text(
-                            text = clickedMarker!!.title,
+                            text = "Name: ${clickedMarker!!.title}",
                             style = MaterialTheme.typography.titleLarge
                         )
                     },
                     text = {
                         Column {
                             Text(
-                                text = clickedMarker!!.snippet,
+                                text = "Description: ${clickedMarker!!.snippet}",
                                 style = MaterialTheme.typography.bodyLarge
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Text(
-                                text = "Lat: ${String.format("%.4f", clickedMarker!!.position.latitude)}, Lng: ${String.format("%.4f", clickedMarker!!.position.longitude)}",
+                                text = "Location: Lat ${String.format("%.4f", clickedMarker!!.position.latitude)}, Lng ${String.format("%.4f", clickedMarker!!.position.longitude)}",
                                 style = MaterialTheme.typography.bodyMedium,
                                 color = MaterialTheme.colorScheme.secondary
                             )

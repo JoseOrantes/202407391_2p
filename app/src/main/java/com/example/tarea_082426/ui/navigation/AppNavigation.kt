@@ -14,20 +14,20 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.tarea_082426.ui.Login.LoginScreen
 import com.example.tarea_082426.ui.Login.LoginViewModel
-import com.example.tarea_082426.ui.censo.CensoScreen
-import com.example.tarea_082426.ui.censo.CensoViewModel
 import com.example.tarea_082426.ui.dashboard.DashboardScreen
+import com.example.tarea_082426.ui.location.LocationScreen
+import com.example.tarea_082426.ui.location.LocationViewModel
 import com.example.tarea_082426.ui.map.MapScreen
 import com.example.tarea_082426.ui.map.MapViewModel
 
-object AppRoutes { // Define las rutas de la app
+object AppRoutes {
     const val LOGIN = "login"
     const val DASHBOARD = "dashboard/{id}/{nombre}/{usuario}/{idRol}/{rol}"
     const val MAP = "map"
-    const val CENSO = "censo/{userId}"
+    const val LOCATION = "location/{userId}"
 
-    fun censoRoute(userId: Int): String {
-        return "censo/$userId"
+    fun locationRoute(userId: Int): String {
+        return "location/$userId"
     }
 
     fun dashboardRoute(id: Int, nombre: String, usuario: String, idRol: Int, rol: String): String {
@@ -61,7 +61,7 @@ fun AppNavigator(
                 modifier = Modifier
             )
         }
-        // Menú principal adaptativo por rol
+        // Menú principal
         composable(
             route = AppRoutes.DASHBOARD,
             arguments = listOf(
@@ -85,7 +85,7 @@ fun AppNavigator(
                 idRol = idRol,
                 rol = rol,
                 onCensoClick = {
-                    navController.navigate(AppRoutes.censoRoute(id))
+                    navController.navigate(AppRoutes.locationRoute(id))
                 },
                 onMapClick = {
                     navController.navigate(AppRoutes.MAP)
@@ -97,15 +97,14 @@ fun AppNavigator(
                 }
             )
         }
-        // Captura de censo y retorno de coordenadas
+        // Captura de ubicación
         composable(
-            route = AppRoutes.CENSO,
+            route = AppRoutes.LOCATION,
             arguments = listOf(navArgument("userId") { type = NavType.IntType })
         ) { backStackEntry ->
             val userId = backStackEntry.arguments?.getInt("userId") ?: 0
-            val viewModel: CensoViewModel = viewModel()
+            val viewModel: LocationViewModel = viewModel()
 
-            // Lectura de coordenadas seleccionadas en el mapa
             val savedStateHandle = backStackEntry.savedStateHandle
             val selectedLat = savedStateHandle.getStateFlow<Double?>("selected_lat", null).collectAsState()
             val selectedLng = savedStateHandle.getStateFlow<Double?>("selected_lng", null).collectAsState()
@@ -118,7 +117,7 @@ fun AppNavigator(
                 }
             }
 
-            CensoScreen(
+            LocationScreen(
                 userId = userId,
                 onBackToDashboard = {
                     navController.popBackStack()
@@ -126,20 +125,20 @@ fun AppNavigator(
                 onMapClick = {
                     navController.navigate(AppRoutes.MAP)
                 },
-                censoViewModel = viewModel
+                locationViewModel = viewModel
             )
         }
-        // Pantalla de mapa (Admin visualiza censos, Censista selecciona punto)
+        // Pantalla de mapa
         composable(AppRoutes.MAP) {
             val viewModel: MapViewModel = viewModel()
             val previousRoute = navController.previousBackStackEntry?.destination?.route
-            val isFromCenso = previousRoute?.startsWith("censo") == true
+            val isFromLocation = previousRoute?.startsWith("location") == true
 
             MapScreen(
                 onBackToDashboard = {
                     navController.popBackStack()
                 },
-                onLocationSelected = if (isFromCenso) { lat, lng ->
+                onLocationSelected = if (isFromLocation) { lat, lng ->
                     navController.previousBackStackEntry?.savedStateHandle?.set("selected_lat", lat)
                     navController.previousBackStackEntry?.savedStateHandle?.set("selected_lng", lng)
                     navController.popBackStack()

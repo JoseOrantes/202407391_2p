@@ -1,8 +1,8 @@
 package com.example.tarea_082426.model
 
-data class CensoState(
+data class LocationState(
     val nombre: String = "",
-    val apellido: String = "",
+    val descripcion: String = "",
     val totalMiembros: String = "",
     val cantidadTVs: String = "",
     val paisesDisponibles: List<Pais> = emptyList(),
@@ -16,5 +16,5 @@ data class CensoState(
     val longitud: Double? = null,
     val isLoading: Boolean = false,
     val mensaje: String = "",
-    val censoGuardadoExitoso: Boolean = false
+    val locationGuardadaExitosa: Boolean = false
 )

@@ -28,7 +28,8 @@ class LoginViewModel : ViewModel() {
     // Petición de inicio de sesión
     fun onLoginClick(context: Context){
         viewModelScope.launch {
-            val resultado = repository.login(context, _state.value.email.trim(), _state.value.password.trim())
+            val inputEmail = _state.value.email.trim()
+            val resultado = repository.login(context, inputEmail, _state.value.password.trim())
 
             resultado.onSuccess { response ->
                 val user = response.body?.user
@@ -38,14 +39,17 @@ class LoginViewModel : ViewModel() {
                 val idRolReal = rawIdRol ?: 2
                 val rolReal = if (!rawRol.isNullOrEmpty()) rawRol else if (idRolReal == 1) "ADMIN" else "USER"
 
+                val userEmail = user?.email?.ifEmpty { null } ?: user?.usuario?.ifEmpty { null } ?: inputEmail
+                val userUsuario = user?.usuario?.ifEmpty { null } ?: userEmail
+
                 _state.value = _state.value.copy(
                     loginExitoso = true,
                     id = user?.id ?: 0,
-                    email = user?.email ?: "",
+                    email = userEmail,
                     token = response.body?.token ?: "",
                     nombre = user?.nombre ?: "",
                     apellido = user?.apellido ?: "",
-                    usuario = user?.usuario ?: "",
+                    usuario = userUsuario,
                     id_rol = idRolReal,
                     rol = rolReal
                 )

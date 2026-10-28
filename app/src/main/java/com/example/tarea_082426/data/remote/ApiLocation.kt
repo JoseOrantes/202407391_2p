@@ -1,6 +1,6 @@
 package com.example.tarea_082426.data.remote
 
-import com.example.tarea_082426.model.request.CensoRequest
+import com.example.tarea_082426.model.request.LocationRequest
 import com.example.tarea_082426.model.response.StandardResponse
 import retrofit2.Response
 import retrofit2.http.Body
@@ -8,7 +8,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 
-interface ApiCenso {
+interface ApiLocation {
 
     @GET("api/paises")
     suspend fun getPaises(): Response<Any>
@@ -26,20 +26,20 @@ interface ApiCenso {
     suspend fun getAllMunicipios(): Response<Any>
 
     @POST("api/censos")
-    suspend fun guardarCenso(@Body request: CensoRequest): Response<StandardResponse>
+    suspend fun guardarLocation(@Body request: LocationRequest): Response<StandardResponse>
 
     @POST("api/censo")
-    suspend fun guardarCensoSingular(@Body request: CensoRequest): Response<StandardResponse>
+    suspend fun guardarLocationSingular(@Body request: LocationRequest): Response<StandardResponse>
 
     @POST("api/users/{userId}/censos")
-    suspend fun guardarCensoUser(@Path("userId") userId: Int, @Body request: CensoRequest): Response<StandardResponse>
+    suspend fun guardarLocationUser(@Path("userId") userId: Int, @Body request: LocationRequest): Response<StandardResponse>
 
     @POST("api/users/{userId}/censo")
-    suspend fun guardarCensoUserSingular(@Path("userId") userId: Int, @Body request: CensoRequest): Response<StandardResponse>
+    suspend fun guardarLocationUserSingular(@Path("userId") userId: Int, @Body request: LocationRequest): Response<StandardResponse>
 
     @POST("api/censos/crear")
-    suspend fun guardarCensoCrear(@Body request: CensoRequest): Response<StandardResponse>
+    suspend fun guardarLocationCrear(@Body request: LocationRequest): Response<StandardResponse>
 
     @POST("api/censo/crear")
-    suspend fun guardarCensoSingularCrear(@Body request: CensoRequest): Response<StandardResponse>
+    suspend fun guardarLocationSingularCrear(@Body request: LocationRequest): Response<StandardResponse>
 }

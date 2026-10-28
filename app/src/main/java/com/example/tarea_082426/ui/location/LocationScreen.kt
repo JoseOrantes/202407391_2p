@@ -1,4 +1,4 @@
-package com.example.tarea_082426.ui.censo
+package com.example.tarea_082426.ui.location
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -36,7 +35,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -46,14 +44,14 @@ import com.google.android.gms.location.Priority
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CensoScreen(
+fun LocationScreen(
     userId: Int = 0,
     onBackToDashboard: () -> Unit = {},
     onMapClick: () -> Unit = {},
     modifier: Modifier = Modifier,
-    censoViewModel: CensoViewModel = viewModel()
+    locationViewModel: LocationViewModel = viewModel()
 ) {
-    val state by censoViewModel.state.collectAsState()
+    val state by locationViewModel.state.collectAsState()
     val context = LocalContext.current
 
     // Obtiene la ubicación GPS actual activa del dispositivo
@@ -65,12 +63,12 @@ fun CensoScreen(
                 null
             ).addOnSuccessListener { currLoc ->
                 if (currLoc != null) {
-                    censoViewModel.onUbicacionSeleccionada(currLoc.latitude, currLoc.longitude)
+                    locationViewModel.onUbicacionSeleccionada(currLoc.latitude, currLoc.longitude)
                     Toast.makeText(context, "GPS: ${currLoc.latitude}, ${currLoc.longitude}", Toast.LENGTH_SHORT).show()
                 } else {
                     fusedLocationClient.lastLocation.addOnSuccessListener { loc ->
                         if (loc != null) {
-                            censoViewModel.onUbicacionSeleccionada(loc.latitude, loc.longitude)
+                            locationViewModel.onUbicacionSeleccionada(loc.latitude, loc.longitude)
                             Toast.makeText(context, "GPS: ${loc.latitude}, ${loc.longitude}", Toast.LENGTH_SHORT).show()
                         } else {
                             Toast.makeText(context, context.getString(R.string.census_gps_warning), Toast.LENGTH_LONG).show()
@@ -138,34 +136,16 @@ fun CensoScreen(
                 ) {
                     OutlinedTextField(
                         value = state.nombre,
-                        onValueChange = { censoViewModel.onNombreChange(it) },
+                        onValueChange = { locationViewModel.onNombreChange(it) },
                         label = { Text(stringResource(R.string.census_name)) },
                         modifier = Modifier.fillMaxWidth()
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     OutlinedTextField(
-                        value = state.apellido,
-                        onValueChange = { censoViewModel.onApellidoChange(it) },
-                        label = { Text(stringResource(R.string.census_lastname)) },
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = state.totalMiembros,
-                        onValueChange = { censoViewModel.onTotalMiembrosChange(it) },
-                        label = { Text(stringResource(R.string.census_total_members)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                        modifier = Modifier.fillMaxWidth()
-                    )
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    OutlinedTextField(
-                        value = state.cantidadTVs,
-                        onValueChange = { censoViewModel.onCantidadTVsChange(it) },
-                        label = { Text(stringResource(R.string.census_tv_count)) },
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                        value = state.descripcion,
+                        onValueChange = { locationViewModel.onDescripcionChange(it) },
+                        label = { Text(stringResource(R.string.census_description)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(16.dp))
@@ -203,17 +183,15 @@ fun CensoScreen(
 
                     Spacer(modifier = Modifier.height(24.dp))
 
-                    // Validación de campos completos y ubicación para habilitar guardado
+                    // Validación de Nombre, Descripción y Coordenadas GPS para habilitar guardado
                     val isFormValid = state.nombre.trim().isNotEmpty() &&
-                            state.apellido.trim().isNotEmpty() &&
-                            state.totalMiembros.trim().isNotEmpty() &&
-                            state.cantidadTVs.trim().isNotEmpty() &&
+                            state.descripcion.trim().isNotEmpty() &&
                             state.latitud != null &&
                             state.longitud != null &&
                             !state.isLoading
 
                     Button(
-                        onClick = { censoViewModel.guardarCenso(userId) },
+                        onClick = { locationViewModel.guardarLocation(userId) },
                         enabled = isFormValid,
                         colors = ButtonDefaults.buttonColors(
                             containerColor = Color(0xFF4997D0),
@@ -239,7 +217,7 @@ fun CensoScreen(
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = state.mensaje,
-                    color = if (state.censoGuardadoExitoso) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
+                    color = if (state.locationGuardadaExitosa) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.error
                 )
             }
         }

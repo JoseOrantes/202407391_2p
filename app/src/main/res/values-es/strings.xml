@@ -1,68 +1,24 @@
 <resources>
-    <string name="app_name">Tarea_082426</string>
+    <string name="app_name">CensoDM</string>
 
     <!-- Login -->
     <string name="login_title">Iniciar Sesión</string>
     <string name="login_email">Correo</string>
     <string name="login_password">Contraseña</string>
     <string name="login_button">Ingresar</string>
-    <string name="login_face_button">Iniciar Sesión con Foto</string>
 
     <!-- Dashboard -->
     <string name="dashboard_welcome">¡Bienvenido %1$s!</string>
-    <string name="dashboard_role">Rol: %1$s</string>
     <string name="dashboard_main_menu">Menú Principal</string>
-    <string name="dashboard_view_profile">Ver Perfil</string>
     <string name="dashboard_map">Mapa</string>
-    <string name="dashboard_register_user">Registrar Usuario</string>
-    <string name="dashboard_take_census">Tomar Censo</string>
+    <string name="dashboard_take_census">Tomar Ubicación</string>
     <string name="dashboard_logout">Cerrar Sesión</string>
 
-    <!-- Profile -->
-    <string name="profile_greeting">¡Hola!</string>
-    <string name="profile_name">Nombre</string>
-    <string name="profile_lastname">Apellido</string>
-    <string name="profile_username">Usuario</string>
-    <string name="profile_email">Correo</string>
-    <string name="profile_phone">Teléfono</string>
-    <string name="profile_birthdate">Fecha Nac.</string>
-    <string name="profile_gender">Género</string>
-    <string name="profile_back_dashboard">Volver al Dashboard</string>
-    <string name="profile_dialog_title">Foto de perfil</string>
-    <string name="profile_dialog_msg">¿De dónde deseas seleccionar tu imagen?</string>
-    <string name="profile_dialog_camera">Cámara</string>
-    <string name="profile_dialog_gallery">Galería</string>
-
-    <!-- Register -->
-    <string name="register_title">Crear Cuenta</string>
-    <string name="register_name">Nombre</string>
-    <string name="register_lastname">Apellido</string>
-    <string name="register_username">Usuario</string>
-    <string name="register_email">Correo Electrónico</string>
-    <string name="register_password">Contraseña</string>
-    <string name="register_confirm_password">Compruebe Contraseña</string>
-    <string name="register_phone">Teléfono</string>
-    <string name="register_birthdate">Fecha Nacimiento</string>
-    <string name="register_gender">Género</string>
-    <string name="register_role">Rol</string>
-    <string name="register_button">Registrarse</string>
-    <string name="register_back">Volver</string>
-
-    <!-- Census -->
-    <string name="census_title">Captura de Censo</string>
+    <!-- Location -->
+    <string name="census_title">Captura de Ubicación</string>
     <string name="census_name">Nombre</string>
-    <string name="census_lastname">Apellido</string>
-    <string name="census_total_members">Total de Miembros</string>
-    <string name="census_tv_count">Cantidad de Televisiones</string>
-    <string name="census_country">País</string>
-    <string name="census_select_country">Seleccionar País</string>
-    <string name="census_department">Departamento</string>
-    <string name="census_select_department">Seleccionar Departamento</string>
-    <string name="census_select_country_first">Primero seleccione un País</string>
-    <string name="census_municipality">Municipio</string>
-    <string name="census_select_municipality">Seleccionar Municipio</string>
-    <string name="census_select_department_first">Primero seleccione Departamento</string>
-    <string name="census_save_button">Guardar Censo</string>
+    <string name="census_description">Descripción</string>
+    <string name="census_save_button">Guardar Ubicación</string>
     <string name="census_use_current_location">Usar Ubicación Actual</string>
     <string name="census_gps_warning">Por favor active la ubicación GPS de su dispositivo.</string>
     <string name="census_back_dashboard">Volver al Dashboard</string>

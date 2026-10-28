@@ -26,8 +26,8 @@ object RetrofitClient {
         retrofit.create(ApiLogin::class.java)
     }
 
-    val apiCenso: ApiCenso by lazy {
-        retrofit.create(ApiCenso::class.java)
+    val apiLocation: ApiLocation by lazy {
+        retrofit.create(ApiLocation::class.java)
     }
 
     val apiMap: ApiMap by lazy {

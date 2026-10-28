@@ -4,12 +4,11 @@ import com.example.tarea_082426.data.remote.RetrofitClient
 import com.example.tarea_082426.model.Departamento
 import com.example.tarea_082426.model.Municipio
 import com.example.tarea_082426.model.Pais
-import com.example.tarea_082426.model.request.CensoRequest
+import com.example.tarea_082426.model.request.LocationRequest
 import com.example.tarea_082426.model.response.StandardResponse
-import retrofit2.Response
 
-class CensoRepository {
-    private val apiCenso = RetrofitClient.apiCenso
+class LocationRepository {
+    private val apiLocation = RetrofitClient.apiLocation
 
     private fun extractListFromRaw(raw: Any?): List<Map<*, *>> {
         if (raw == null) return emptyList()
@@ -29,7 +28,7 @@ class CensoRepository {
 
     suspend fun getPaises(): Result<List<Pais>> {
         return try {
-            val response = apiCenso.getPaises()
+            val response = apiLocation.getPaises()
             if (response.isSuccessful && response.body() != null) {
                 val list = mutableListOf<Pais>()
                 val rawList = extractListFromRaw(response.body())
@@ -57,14 +56,14 @@ class CensoRepository {
 
     suspend fun getDepartamentos(idPais: String): Result<List<Departamento>> {
         var response = try {
-            apiCenso.getDepartamentos(idPais)
+            apiLocation.getDepartamentos(idPais)
         } catch (e: Exception) {
             null
         }
 
         if (response == null || !response.isSuccessful || response.body() == null) {
             response = try {
-                apiCenso.getAllDepartamentos()
+                apiLocation.getAllDepartamentos()
             } catch (e: Exception) {
                 null
             }
@@ -107,14 +106,14 @@ class CensoRepository {
 
     suspend fun getMunicipios(idDepartamento: Int): Result<List<Municipio>> {
         var response = try {
-            apiCenso.getMunicipios(idDepartamento)
+            apiLocation.getMunicipios(idDepartamento)
         } catch (e: Exception) {
             null
         }
 
         if (response == null || !response.isSuccessful || response.body() == null) {
             response = try {
-                apiCenso.getAllMunicipios()
+                apiLocation.getAllMunicipios()
             } catch (e: Exception) {
                 null
             }
@@ -164,10 +163,10 @@ class CensoRepository {
         }
     }
 
-    // Petición POST para guardar censo
-    suspend fun guardarCenso(request: CensoRequest): Result<StandardResponse> {
+    // Petición POST para guardar ubicación
+    suspend fun guardarLocation(request: LocationRequest): Result<StandardResponse> {
         return try {
-            val response = apiCenso.guardarCenso(request)
+            val response = apiLocation.guardarLocation(request)
             if (response.isSuccessful && response.body() != null) {
                 Result.success(response.body()!!)
             } else {
